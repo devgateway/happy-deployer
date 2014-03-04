@@ -1,0 +1,81 @@
+# This is a sample settings file. Copy it into your project root.
+
+####################
+# General settings start here.
+
+# Relative or absolute path pointing to the happy-deployer files.
+# NOTE: Do NOT add a trailing slash (/).
+#happy_deployer_path: /home/user/Downloads/happy-deployer
+happy_deployer_path: ../happy-deployer
+
+# Some options for the "puppet apply"
+# NOTE: "--parser future" is required!
+puppet_options:
+  --parser future
+  --verbose
+  # --debug
+
+####################
+# Project specific settings start here.
+
+# The manifest file to use for this project.
+# This file should be in the happy-deployer/puppet/manifests folder:
+puppet_manifest_file: default.pp
+
+# A fixed ip for the VM
+internal_ip: 10.10.10.110
+hostname: the-portal
+
+# FQDN and aliases
+domain: the-portal.dev
+aliases:
+  - www.the-portal.dev
+  - sub.the-portal.dev
+
+environment: LOCAL
+
+# Path where the current folder will be mounted and where the FQDN will point.
+docroot: /var/www/the-portal
+
+####################
+# Database specific settings start here.
+
+# mysql_root_password: 'this_is_a_random_password'
+# mysql_databases:
+#   - name: main_database
+#     user: main_user
+#     pass: this_is_a_random_generated_password!
+
+pgsql_root_password: 'this_is_a_random_password'
+pgsql_databases:
+  - name: main_database
+    user: main_user
+    pass: this_is_a_random_generated_password!
+  - name: seccond_database
+    user: seccond_user
+    pass: this_is_another_random_generated_password!
+
+####################
+# Default vagrant box.
+box:
+  name: precise64
+  url: http://files.vagrantup.com/precise64.box
+  download_checksum: 5803ee2fa7c5ded51a59f7928a2fead0
+  download_checksum_type: md5
+
+# Hiera configuration for puppet. Goes as content into /etc/puppet/hiera.yaml
+puppet_hiera_data_folder: /etc/puppet/modules/site/data
+
+# <<<data_folder>>> is a placeholder for puppet_hiera_data_folder
+etc_puppet_hiera_yaml: |
+  ---
+  :backends:
+    - yaml
+
+  :yaml:
+    :datadir: <<<data_folder>>>
+
+  :hierarchy:
+    - %{fqdn_underscore}
+    - %{environment}
+    - common

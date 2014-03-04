@@ -1,0 +1,85 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# This is a sample Vagrantfile file. Copy it into your project root.
+
+
+# Load some project specific settings form YAML files.
+require 'yaml'
+project_settings = YAML.load_file('Vagrantsettings.yaml')
+
+# Replace '<<<data_folder>>>' placeholder string
+project_settings['etc_puppet_hiera_yaml']['<<<data_folder>>>'] = project_settings['puppet_hiera_data_folder']
+
+# Vagrantfile API version.
+# @see http://docs.vagrantup.com/v2/vagrantfile/machine_settings.html
+API_VERSION = '2'
+Vagrant.configure(API_VERSION) do |config|
+  config.vm.box = project_settings['box']['name']
+
+  # Information about the box.
+  config.vm.box_url = project_settings['box']['url']
+  config.vm.box_download_checksum = project_settings['box']['download_checksum']
+  config.vm.box_download_checksum_type = project_settings['box']['download_checksum_type']
+
+  # Setup the VM hostname
+  config.vm.hostname = project_settings['domain']
+
+  ####################
+  # Setup VM access:
+
+  # 1. Add port forwarding
+  config.vm.network :forwarded_port, guest: 80, host: 8080
+  # 2. Add a new virtual network inteface card with a fixed IP.
+  # config.vm.network :private_network, ip: project_settings['internal_ip']
+  # Then manually add the IP+domain to /etc/hosts OR have vagrant-hostsupdater plugin installed.
+  # @see https://github.com/cogitatio/vagrant-hostsupdater
+  # For MacOS:
+  # @see https://github.com/BerlinVagrant/vagrant-dns
+  # 3. Setup triggers or hosts-shell.
+  # @see https://github.com/emyl/vagrant-triggers
+  # @see https://github.com/phinze/vagrant-host-shell
+
+  # Settings for the vagrant-hostsupdater plugin.
+  # config.hostsupdater.remove_on_suspend = true
+
+  ####################
+
+  # Mount the current folder in the project document root.
+  config.vm.synced_folder './', project_settings['docroot']
+
+  config.vm.provider :virtualbox do |v|
+    # v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    v.customize ["modifyvm", :id, "--memory", 1024]
+  end
+
+  # Setup Hiera.
+  # @see http://docs.puppetlabs.com/hiera/1/index.html
+  # @TODO: Find a way to provide environment specific settings.
+  config.vm.provision "shell",
+    inline: 'echo "' + project_settings['etc_puppet_hiera_yaml'] + '" > /etc/puppet/hiera.yaml'
+
+  config.vm.provision "shell",
+    inline: 'mkdir -p ' + project_settings['puppet_hiera_data_folder']
+
+  # Create link to common settings if it does not exist.
+  data_folder = project_settings['puppet_hiera_data_folder']
+  test_commands = "test -d #{data_folder} -a -L #{data_folder}/common.yaml"
+  action_commands = "mkdir -p #{data_folder} && ln -s /vagrant/Vagrantsettings.yaml #{data_folder}/common.yaml"
+  config.vm.provision "shell",
+    inline: "(#{test_commands}) || (#{action_commands})"
+
+  config.vm.provision 'puppet' do |puppet|
+    puppet.options = project_settings['puppet_options']
+
+    puppet.manifest_file = project_settings['puppet_manifest_file']
+    puppet.manifests_path = project_settings['happy_deployer_path'] + '/puppet/manifests'
+    puppet.module_path = project_settings['happy_deployer_path'] + '/puppet/modules'
+
+    # Variables passed to puppet files.
+    puppet.facter = {
+      'fqdn_underscore' => project_settings['domain'].gsub(/[^A-Za-z0-9]/, "_"),
+      'environment' => project_settings['environment'],
+    }
+  end
+end

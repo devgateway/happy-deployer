@@ -1,0 +1,4 @@
+
+# Ignore all puppet manifests except for the default one.
+*.pp
+!default.pp

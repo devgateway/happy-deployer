@@ -1,0 +1,4 @@
+name 'theauthor-happydev'
+version '0.1.0'
+summary 'Drupal Development Environment'
+description 'A Puppet module to quickly create a basic Drupal development environment.'

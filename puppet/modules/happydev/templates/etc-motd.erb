@@ -1,0 +1,8 @@
+
+Welcome to the <%= scope['::project_environment'] %> environment for <%= scope['::project_name'] %>
+
+NOTE, in SL6 psql has 'local socket' for default hostname, be sure to use:
+  psql -U $USER -W -h localhost $DATABASE
+
+For any suggestions: https://github.com/devgateway/happy-deployer/issues
+

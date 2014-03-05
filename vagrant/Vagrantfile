@@ -69,12 +69,21 @@ Vagrant.configure(API_VERSION) do |config|
   config.vm.provision "shell",
     inline: "(#{test_commands}) || (#{action_commands})"
 
+  # Install the happydev puppet module and dependencies if not already installed.
+  test_commands = "test -d /etc/puppet/modules/happydev"
+  action_commands = "puppet module install SchnWalter/happydev --version 0.1.0"
+  config.vm.provision "shell",
+    inline: "(#{test_commands}) || (#{action_commands})"
+
   config.vm.provision 'puppet' do |puppet|
     puppet.options = project_settings['puppet_options']
 
-    puppet.manifest_file = project_settings['puppet_manifest_file']
-    puppet.manifests_path = project_settings['happy_deployer_path'] + '/puppet/manifests'
-    puppet.module_path = project_settings['happy_deployer_path'] + '/puppet/modules'
+    puppet.manifests_path = ['vm', '/tmp/manifests']
+    puppet.manifest_file = 'default.pp'
+
+    # puppet.manifest_file = project_settings['puppet_manifest_file']
+    # puppet.manifests_path = project_settings['happy_deployer_path'] + '/puppet/manifests'
+    # puppet.module_path = project_settings['happy_deployer_path'] + '/puppet/modules'
 
     # Variables passed to puppet files.
     puppet.facter = {

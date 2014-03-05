@@ -18,10 +18,12 @@ class happydev::pgsql (
     manage_package_repo => true,
     version => '9.2',
     # pg_hba_conf_defaults => false,
-  }->
+  } ->
   class { '::postgresql::server':
     postgres_password => $root_password,
   }
+
+  class { '::postgresql::server::contrib': }
 
   # Create the databases.
   each($databases) |$dbinfo| {

@@ -155,7 +155,7 @@ class happydev::apache_php (
     repository => 'pear.drush.org',
   }
 
-  # file { "${::project_docroot}/test.php":
+  # file { "${docroot}/test.php":
   #   ensure  => file,
   #   content => '<?php phpinfo();',
   #   group => 'vagrant',

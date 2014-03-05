@@ -1,11 +1,11 @@
 # = Class: happydev::rhel
 #
-# == Requires:
-#
 # == TODO:
 #
 # * Only install FastestMirror on dev environments, manually add a fast mirror
 #   on production environments.
+# * Make sure 'yum update' isn't trigger every time.
+#
 
 class happydev::rhel (
   $epel_repo = hiera('happydev::rhel::epel_repo', true),
@@ -14,14 +14,6 @@ class happydev::rhel (
 
   if ( $::osfamily == 'RedHat') {
     Exec { path => [ '/bin/', '/sbin/' , '/usr/bin/', '/usr/sbin/' ] }
-
-    exec { 'yum clean all':
-      refreshonly => true, # execute only when notified.
-    }
-
-    exec { 'yum update':
-      refreshonly => true, # execute only when notified.
-    }
 
     if ($fast_mirror) {
       if ($fast_mirror_plugin_status == 'missing') {
@@ -35,21 +27,14 @@ class happydev::rhel (
         package { 'yum-plugin-fastestmirror':
           ensure => latest,
           provider => 'yum',
-          notify => [
-            Exec['yum clean all'],
-            Exec['yum update'],
-          ],
-        }
+        } ->
+        exec { 'yum clean all': }
       }
     }
     else {
       # Remove all FastestMirror yum plugin.
       exec { 'remove yum-plugin-fastestmirror':
         command => 'yum -y -d 0 -e 0 remove yum-plugin-fastestmirror',
-        notify => [
-          Exec['yum clean all'],
-          Exec['yum update'],
-        ],
       }
     }
 
@@ -60,39 +45,24 @@ class happydev::rhel (
         yumrepo { 'epel-bootstrap':
           descr    => "EPEL Bootstrap",
           mirrorlist  => "http://mirrors.fedoraproject.org/mirrorlist?repo=epel-\$releasever&arch=\$basearch",
-          enabled  => 1,
+          enabled  => 0,
           gpgcheck => 0,
           failovermethod => 'priority',
-          before => [
-            Package['epel-release'],
-          ],
-        }
-
+        } ->
         package { 'epel-release':
           ensure => installed,
           provider => 'yum',
-          before => [
-            Exec['disable epel-bootstrap'],
-          ],
-        }
-
+        } ->
         exec { 'disable epel-bootstrap':
           command => 'yum-config-manager --disable epel-bootstrap',
-          notify => [
-            Exec['yum clean all'],
-            Exec['yum update'],
-          ],
-        }
+        } ->
+        exec { 'yum --assumeyes update': }
       }
     }
     else {
       # Remove all EPEL repositories
       exec { 'remove epel repo':
         command => 'yum -y -d 0 -e 0 remove epel-release',
-        notify => [
-          Exec['yum clean all'],
-          Exec['yum update'],
-        ],
       }
     }
   }

@@ -131,28 +131,30 @@ class happydev::apache_php (
     require => Class['php'],
   }
 
-  # Update PEAR channel (avoid warnings "channel X has updated its protocols")
-  # Not required, this is solved by rafaelfc/pear.
-  # exec { "update pear.php.net channel":
-  #   command => "pear channel-update pear.php.net",
-  #   logoutput => true,
-  # }
-  pear::package { 'PEAR':
-    require => Class['pear'] # make sure pear is installed before.
-  }
+  if ($drush_status == 'missing') {
+    # Update PEAR channel (avoid warnings "channel X has updated its protocols")
+    # Not required, this is solved by rafaelfc/pear.
+    # exec { "update pear.php.net channel":
+    #   command => "pear channel-update pear.php.net",
+    #   logoutput => true,
+    # }
+    pear::package { 'PEAR':
+      require => Class['pear'] # make sure pear is installed before.
+    }
 
-  # Install the upload progress.
-  pear::package { 'uploadprogress':
-    repository => 'pecl.php.net',
-    require => Pear::Package['PEAR'] # make sure pear is upgraded before.
-  }
+    # Install the upload progress.
+    pear::package { 'uploadprogress':
+      repository => 'pecl.php.net',
+      require => Pear::Package['PEAR'] # make sure pear is upgraded before.
+    }
 
-  # Setup Drush.
-  pear::package { 'Console_Table':
-    require => Pear::Package['PEAR'] # make sure pear is upgraded before.
-  } ->
-  pear::package { 'drush':
-    repository => 'pear.drush.org',
+    # Setup Drush.
+    pear::package { 'Console_Table':
+      require => Pear::Package['PEAR'] # make sure pear is upgraded before.
+    } ->
+    pear::package { 'drush':
+      repository => 'pear.drush.org',
+    }
   }
 
   # file { "${docroot}/test.php":

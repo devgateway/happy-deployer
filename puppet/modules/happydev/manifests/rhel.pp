@@ -12,7 +12,7 @@ class happydev::rhel (
   $fast_mirror = hiera('happydev::rhel::fast_mirror', true),
 ) {
 
-  if ( $::osfamily == 'RedHat2222') {
+  if ( $::osfamily == 'RedHat') {
     Exec { path => [ '/bin/', '/sbin/' , '/usr/bin/', '/usr/sbin/' ] }
 
     exec { 'yum clean all':

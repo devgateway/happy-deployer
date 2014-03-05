@@ -2,10 +2,16 @@
 #
 # == Requires:
 #
-# * puppetlabs/apache (>= 0.11)
+# * 'puppetlabs/apache', '1.x'
 #   @see http://forge.puppetlabs.com/puppetlabs/apache
-# * example42/php (2.x)
+# * 'puppetlabs/firewall', '1.x'
+#   @see http://forge.puppetlabs.com/puppetlabs/firewall
+# * 'example42/php', '2.x'
 #   @see http://forge.puppetlabs.com/example42/php
+# * 'example42/puppi', '>= 2.0.0'
+#   @see http://forge.puppetlabs.com/example42/puppi
+# * 'rafaelfc/pear', '1.x'
+#   @see http://forge.puppetlabs.com/rafaelfc/pear
 #
 # == TODO:
 #

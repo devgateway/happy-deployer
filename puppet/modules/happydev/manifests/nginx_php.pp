@@ -2,9 +2,11 @@
 #
 # == Requires:
 #
-# * puppetlabs/nginx (0.x)
+# * 'puppetlabs/nginx', '>= 0.0.1'
 #   @see http://forge.puppetlabs.com/puppetlabs/nginx
-# * example42/php (2.x)
+# * 'puppetlabs/firewall', '1.x'
+#   @see http://forge.puppetlabs.com/puppetlabs/firewall
+# * 'example42/php', '2.x'
 #   @see http://forge.puppetlabs.com/example42/php
 #
 # == TODO:

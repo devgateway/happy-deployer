@@ -2,7 +2,7 @@
 #
 # == Requires:
 #
-# * puppetlabs/mysql (2.x)
+# * 'puppetlabs/mysql', '2.x'
 #   @see http://forge.puppetlabs.com/puppetlabs/mysql
 #
 

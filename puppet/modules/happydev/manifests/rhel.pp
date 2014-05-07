@@ -55,8 +55,7 @@ class happydev::rhel (
         } ->
         exec { 'disable epel-bootstrap':
           command => 'yum-config-manager --disable epel-bootstrap',
-        } ->
-        exec { 'yum --assumeyes update': }
+        }
       }
     }
     else {

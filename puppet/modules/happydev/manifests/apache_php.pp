@@ -30,6 +30,10 @@ class happydev::apache_php (
     # Run apache as vagrant.
     user => 'vagrant',
     group => 'vagrant',
+
+    # http://httpd.apache.org/docs/2.2/mod/core.html#enablesendfile
+    # https://forums.virtualbox.org/viewtopic.php?f=7&t=56066
+    sendfile => 'Off',
   }
 
   # Make sure mod_php and all dependencies are enabled after PHP is installed.
@@ -96,25 +100,25 @@ class happydev::apache_php (
     php::module { $module_name: }
   }
 
-  # php::ini { 'default':
-  #   value => [
-  #     'max_execution_time = 60',
-  #     'memory_limit = 512M',
-  #     'post_max_size = 128M',
-  #     'upload_max_filesize = 128M',
-  #   ],
-  #   target => 'custom.ini'
-  # }
+  php::ini { 'default':
+    value => [
+      'max_execution_time = 60',
+      'memory_limit = 512M',
+      'post_max_size = 128M',
+      'upload_max_filesize = 128M',
+    ],
+    target => 'custom.ini'
+  }
 
-  # php::ini { 'devel':
-  #   value => [
-  #     'date.timezone = America/Chicago',
-  #     'error_reporting = E_ALL | E_STRICT',
-  #     'display_errors = On',
-  #     'display_startup_errors = On',
-  #   ],
-  #   target => 'devel.ini'
-  # }
+  php::ini { 'devel':
+    value => [
+      'date.timezone = America/Chicago',
+      'error_reporting = E_ALL | E_STRICT',
+      'display_errors = On',
+      'display_startup_errors = On',
+    ],
+    target => 'devel.ini'
+  }
 
   service { 'apache':
     restart => true,

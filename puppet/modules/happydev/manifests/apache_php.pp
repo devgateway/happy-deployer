@@ -30,6 +30,10 @@ class happydev::apache_php (
     # Run apache as vagrant.
     user => 'vagrant',
     group => 'vagrant',
+
+    # http://httpd.apache.org/docs/2.2/mod/core.html#enablesendfile
+    # https://forums.virtualbox.org/viewtopic.php?f=7&t=56066
+    sendfile => 'Off',
   }
 
   # Make sure mod_php and all dependencies are enabled after PHP is installed.

@@ -4,21 +4,28 @@ happy-deployer
 Requirements
 ------------
 
-* Latest [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-* Latest [Vagrant](http://www.vagrantup.com/downloads.html)
+* [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+* [Vagrant](http://www.vagrantup.com/downloads.html)
+* [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest)
+* [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater) (works on linux only)
 
 
 Setup Instructions
 ------------------
 
-1. Install VirtualBox
-2. Install Vagrant
-3. Drop the vagrant files directly into your project folder.
-4. Create your virtual development environment (you might need to wait for a while):
-  ```
-  vagrant up --provision
-  ```
-5. Happy coding!
+* Install VirtualBox
+* Install Vagrant
+* Install the Vagrant plugins:
+```
+vagrant plugin install vagrant-vbguest
+vagrant plugin install vagrant-hostsupdater
+```
+* Drop the vagrant files directly into your project folder.
+* Create your virtual development environment (you might need to wait for a while):
+```
+vagrant up --provision
+```
+* Happy coding!
 
 
 How to

@@ -37,8 +37,6 @@ class happydev::fairy_dust::orange_blossom {
     file { '/etc/profile.d/custom.sh':
       content => template('happydev/bash-custom.sh.erb'),
       ensure  => file,
-      group => 'vagrant',
-      owner => 'vagrant',
     }
   }
 }

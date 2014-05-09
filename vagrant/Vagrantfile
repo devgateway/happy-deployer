@@ -7,7 +7,7 @@
 # Load some project specific settings form YAML files.
 require 'yaml'
 project_settings = YAML.load_file('Vagrantsettings.yaml')
-
+# abort(project_settings.inspect) # print variable and exit
 # Replace '<<<data_folder>>>' placeholder string
 project_settings['etc_puppet_hiera_yaml']['<<<data_folder>>>'] = project_settings['puppet_hiera_data_folder']
 
@@ -32,8 +32,11 @@ Vagrant.configure(API_VERSION) do |config|
   config.vm.network :forwarded_port, guest: 80, host: 8080
   # 2. Add a new virtual network inteface card with a fixed IP.
   # config.vm.network :private_network, ip: project_settings['internal_ip']
+
   # Then manually add the IP+domain to /etc/hosts OR have vagrant-hostsupdater plugin installed.
   # @see https://github.com/cogitatio/vagrant-hostsupdater
+  # config.hostsupdater.aliases = project_settings['aliases']
+
   # For MacOS:
   # @see https://github.com/BerlinVagrant/vagrant-dns
   # 3. Setup triggers or hosts-shell.
@@ -44,6 +47,10 @@ Vagrant.configure(API_VERSION) do |config|
   # config.hostsupdater.remove_on_suspend = true
 
   ####################
+
+  # Set the environment name
+  # config.vm.define project_settings['environment'] do |host|
+  # end
 
   # Mount the current folder in the project document root.
   config.vm.synced_folder './', project_settings['docroot']
@@ -71,9 +78,13 @@ Vagrant.configure(API_VERSION) do |config|
 
   # Install the happydev puppet module and dependencies if not already installed.
   test_commands = "test -d /etc/puppet/modules/happydev"
-  action_commands = "puppet module install SchnWalter/happydev --version 0.1.0"
+  action_commands = "puppet module install SchnWalter/happydev --version 0.1.3"
   config.vm.provision "shell",
     inline: "(#{test_commands}) || (#{action_commands})"
+
+  # Create a custom puppet manifest file.
+  config.vm.provision "shell",
+    inline: 'mkdir -p /tmp/manifests && echo "' + project_settings['puppet_manifest_file_contents'] + '" > /tmp/manifests/default.pp'
 
   config.vm.provision 'puppet' do |puppet|
     puppet.options = project_settings['puppet_options']

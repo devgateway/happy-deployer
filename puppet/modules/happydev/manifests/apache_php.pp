@@ -117,7 +117,7 @@ class happydev::apache_php (
       'display_errors = On',
       'display_startup_errors = On',
     ],
-    target => 'devel.ini'
+    target => 'custom-devel.ini'
   }
 
   service { 'apache':

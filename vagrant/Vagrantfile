@@ -7,6 +7,7 @@
 # Load some project specific settings form YAML files.
 require 'yaml'
 project_settings = YAML.load_file('Vagrantsettings.yaml')
+# abort(project_settings.inspect) # print variable and exit
 
 # Replace '<<<data_folder>>>' placeholder string
 project_settings['etc_puppet_hiera_yaml']['<<<data_folder>>>'] = project_settings['puppet_hiera_data_folder']
@@ -25,15 +26,18 @@ Vagrant.configure(API_VERSION) do |config|
   # Setup the VM hostname
   config.vm.hostname = project_settings['domain']
 
-  ####################
+  ########################################
   # Setup VM access:
 
   # 1. Add port forwarding
-  config.vm.network :forwarded_port, guest: 80, host: 8080
+  # config.vm.network :forwarded_port, guest: 80, host: 8080
   # 2. Add a new virtual network inteface card with a fixed IP.
-  # config.vm.network :private_network, ip: project_settings['internal_ip']
+  config.vm.network :private_network, ip: project_settings['internal_ip']
+
   # Then manually add the IP+domain to /etc/hosts OR have vagrant-hostsupdater plugin installed.
   # @see https://github.com/cogitatio/vagrant-hostsupdater
+  config.hostsupdater.aliases = project_settings['aliases']
+
   # For MacOS:
   # @see https://github.com/BerlinVagrant/vagrant-dns
   # 3. Setup triggers or hosts-shell.
@@ -43,7 +47,11 @@ Vagrant.configure(API_VERSION) do |config|
   # Settings for the vagrant-hostsupdater plugin.
   # config.hostsupdater.remove_on_suspend = true
 
-  ####################
+  ########################################
+
+  # Set the environment name
+  # config.vm.define project_settings['environment'] do |host|
+  # end
 
   # Mount the current folder in the project document root.
   config.vm.synced_folder './', project_settings['docroot']
@@ -69,21 +77,48 @@ Vagrant.configure(API_VERSION) do |config|
   config.vm.provision "shell",
     inline: "(#{test_commands}) || (#{action_commands})"
 
-  # Install the happydev puppet module and dependencies if not already installed.
-  test_commands = "test -d /etc/puppet/modules/happydev"
-  action_commands = "puppet module install SchnWalter/happydev --version 0.1.0"
-  config.vm.provision "shell",
-    inline: "(#{test_commands}) || (#{action_commands})"
+  if (project_settings['puppet_development'] == 0)
+    # Remove existing modules.
+    if (project_settings['puppet_force_reinstall'] == 1)
+      config.vm.provision "shell",
+        inline: "rm -rf /etc/puppet/modules"
+    end
+
+    # Install the happydev puppet module and dependencies if not already installed.
+    test_commands = "test -d /etc/puppet/modules/happydev"
+    action_commands = "puppet module install " + project_settings['puppet_module_name'] + " --version " + project_settings['puppet_module_version']
+    config.vm.provision "shell",
+      inline: "(#{test_commands}) || (#{action_commands})"
+
+    # Fix issue for example42-php module in redhat based systems. Ignore if patch has already been applied.
+    install_command = "yum install --tolerant --assumeyes patch"
+    patch_command = "patch --forward --reject-file=- --input=/etc/puppet/modules/happydev/20140513--example42-php--redhat-ini.patch /etc/puppet/modules/php/manifests/ini.pp"
+    config.vm.provision "shell",
+      inline: "(#{install_command}) && (#{patch_command} || true)"
+  end
+
+  if (project_settings['puppet_development'] == 0 && project_settings['puppet_manifest_file_contents'])
+    # Create a custom puppet manifest file.
+    config.vm.provision "shell",
+      inline: 'mkdir -p /tmp/manifests && echo "' + project_settings['puppet_manifest_file_contents'] + '" > /tmp/manifests/default.pp'
+  end
 
   config.vm.provision 'puppet' do |puppet|
-    puppet.options = project_settings['puppet_options']
+    if (project_settings['puppet_development'] == 0)
+      # 1. Default Puppet settings:
+      puppet.options = project_settings['puppet_options']
 
-    puppet.manifests_path = ['vm', '/tmp/manifests']
-    puppet.manifest_file = 'default.pp'
+      puppet.manifests_path = ['vm', '/tmp/manifests']
+      puppet.manifest_file = 'default.pp'
+    else
+      # 2. Development Puppet settings:
+      puppet.options = project_settings['puppet_development_options']
 
-    # puppet.manifest_file = project_settings['puppet_manifest_file']
-    # puppet.manifests_path = project_settings['happy_deployer_path'] + '/puppet/manifests'
-    # puppet.module_path = project_settings['happy_deployer_path'] + '/puppet/modules'
+      puppet.manifests_path = project_settings['happy_deployer_path'] + '/puppet/manifests'
+      puppet.manifest_file = project_settings['puppet_alternative_manifest_file']
+
+      puppet.module_path = project_settings['happy_deployer_path'] + '/puppet/modules'
+    end
 
     # Variables passed to puppet files.
     puppet.facter = {

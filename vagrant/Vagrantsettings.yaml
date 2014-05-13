@@ -1,61 +1,70 @@
 # This is a sample settings file. Copy it into your project root.
 
-####################
-# General settings start here.
+########################################
+# Project specific settings.
 
-# Some options for the "puppet apply"
+# A fixed ip for the VM, should be unique.
+internal_ip: 10.10.10.10
+hostname: the-project
+
+# FQDN and aliases
+domain: the-project.dev
+aliases:
+  - www.the-project.dev
+
+# The type of the environment, not really doing anything at the moment.
+environment: LOCAL
+
+# Mount the current folder in the project document root.
+# NOTE: used by config.vm.synced_folder in your Vagrantfile
+docroot: /var/www/the-project
+
+####################
+# Database specific settings.
+
+# mysql_root_password: 'this_is_a_random_password'
+# mysql_databases:
+#   - name: main_database
+#     user: main_user
+#     pass: this_is_a_random_generated_password!
+
+pgsql_root_password: 'this_is_a_random_password'
+pgsql_databases:
+  - name: main_database
+    user: main_user
+    pass: this_is_a_random_generated_password!
+  - name: seccond_database
+    user: seccond_user
+    pass: this_is_another_random_generated_password!
+
+########################################
+# Vagrant settings.
+
+# Default VM box.
+box:
+  name: precise64
+  url: http://files.vagrantup.com/precise64.box
+  download_checksum: 5803ee2fa7c5ded51a59f7928a2fead0
+  download_checksum_type: md5
+
+########################################
+# Puppet settings.
+
+# Enable puppet development "mode".
+puppet_development: 0
+
+# Default options for the "puppet apply"
 # NOTE: "--parser future" is required!
 puppet_options:
   --parser future
   --verbose
+
+# Development options for the "puppet apply"
+# NOTE: "--parser future" is required!
+puppet_development_options:
+  --parser future
+  --verbose
   --debug
-
-####################
-# Project specific settings start here.
-
-# A fixed ip for the VM
-internal_ip: 10.10.10.115
-hostname: amp-portal-27
-
-# FQDN and aliases
-domain: amp-portal-27.dev
-aliases:
-  - www.amp-portal-27.dev
-  - public.amp-portal-27.dev
-
-environment: LOCAL
-
-# Mount the current folder in the project document root.
-docroot: /var/www/amp-portal-27
-
-####################
-# Database specific settings start here.
-
-mysql_root_password: 'demo#'
-mysql_databases:
-  - name: public_local
-    user: public_user
-    pass: 'demo!'
-  - name: amp_public_page
-    user: public_page_user
-    pass: 'demo!'
-
-pgsql_root_password: 'demo#'
-pgsql_databases:
-  - name: public_local
-    user: public_user
-    pass: 'demo!'
-  - name: amp_local
-    user: amp_user
-    pass: 'demo!'
-
-####################
-# Default vagrant box.
-box:
-  name: scientific
-  url: https://dl.dropboxusercontent.com/s/r4x67n65nn9crch/scientific-20140228.box?dl=1
-  download_checksum: 4d55f9e399e3c2d918cb236d29c52b67
-  download_checksum_type: md5
 
 # Hiera configuration for puppet. Goes as content into /etc/puppet/hiera.yaml
 puppet_hiera_data_folder: /etc/puppet/modules/site/data
@@ -75,23 +84,30 @@ etc_puppet_hiera_yaml: |
     - common
 
 ####################
-# Manifest and modules for puppet.
+# Puppet settings for non-development mode:
+puppet_module_name: SchnWalter/happydev
+puppet_module_version: 0.1.3
+
+# HACK-ishly remove existing modules and then reinstall.
+puppet_force_reinstall: 0
+
 puppet_manifest_file_contents: |
   node default {
     # Do some magic!
     class { '::happydev::fairy_dust::water_lily': } ->
     class { '::happydev::rhel': } ->
     class { '::happydev::fairy_dust::orange_blossom': } ->
-    class { '::happydev::mysql': } ->
     class { '::happydev::pgsql': } ->
     class { '::happydev::apache_php': }
   }
 
-# Relative or absolute path pointing to the happy-deployer files.
-# NOTE: Do NOT add a trailing slash (/).
-#happy_deployer_path: /home/user/Downloads/happy-deployer
-# happy_deployer_path: ../happy-deployer-local
+####################
+# Puppet settings for development mode:
 
-# The manifest file to use for this project.
-# This file should be in the happy-deployer/puppet/manifests folder:
-# puppet_manifest_file: ampp.pp
+# Relative or absolute path pointing to the local development happy-deployer files.
+# NOTE: Do NOT add a trailing slash (/).
+happy_deployer_path: ../happy-deployer
+
+# Alternative (development) manifest file, located in the puppet/manifests folder inside happy-deployer:
+# Replaces puppet_manifest_file_contents only when in puppet development "mode".
+puppet_alternative_manifest_file: lamp.pp

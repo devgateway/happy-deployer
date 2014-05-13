@@ -1,0 +1,8 @@
+# Ignore all extra modules used for local development.
+*
+!.gitignore
+!happydev
+
+# Ignore the built module files.
+# @see: http://docs.puppetlabs.com/puppet/latest/reference/modules_publishing.html#build-your-module
+happydev/pkg

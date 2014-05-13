@@ -1,5 +1,5 @@
 name 'SchnWalter-happydev'
-version '0.1.3'
+version '0.1.4'
 source 'https://github.com/devgateway/happy-deployer/tree/master/puppet/modules/happydev'
 author 'Development Gateway'
 license 'MIT License'

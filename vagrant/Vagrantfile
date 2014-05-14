@@ -9,9 +9,6 @@ require 'yaml'
 project_settings = YAML.load_file('Vagrantsettings.yaml')
 # abort(project_settings.inspect) # print variable and exit
 
-# Replace '<<<data_folder>>>' placeholder string
-project_settings['etc_puppet_hiera_yaml']['<<<data_folder>>>'] = project_settings['puppet_hiera_data_folder']
-
 # Vagrantfile API version.
 # @see http://docs.vagrantup.com/v2/vagrantfile/machine_settings.html
 API_VERSION = '2'
@@ -31,21 +28,20 @@ Vagrant.configure(API_VERSION) do |config|
 
   # 1. Add port forwarding
   # config.vm.network :forwarded_port, guest: 80, host: 8080
+
   # 2. Add a new virtual network inteface card with a fixed IP.
   config.vm.network :private_network, ip: project_settings['internal_ip']
 
-  # Then manually add the IP+domain to /etc/hosts OR have vagrant-hostsupdater plugin installed.
+  # Settings for the vagrant-hostsupdater plugin.
   # @see https://github.com/cogitatio/vagrant-hostsupdater
   config.hostsupdater.aliases = project_settings['aliases']
+  # config.hostsupdater.remove_on_suspend = true
 
   # For MacOS:
   # @see https://github.com/BerlinVagrant/vagrant-dns
   # 3. Setup triggers or hosts-shell.
   # @see https://github.com/emyl/vagrant-triggers
   # @see https://github.com/phinze/vagrant-host-shell
-
-  # Settings for the vagrant-hostsupdater plugin.
-  # config.hostsupdater.remove_on_suspend = true
 
   ########################################
 
@@ -61,30 +57,28 @@ Vagrant.configure(API_VERSION) do |config|
     v.customize ["modifyvm", :id, "--memory", 1024]
   end
 
-  # Setup Hiera.
-  # @see http://docs.puppetlabs.com/hiera/1/index.html
-  # @TODO: Find a way to provide environment specific settings.
-  config.vm.provision "shell",
-    inline: 'echo "' + project_settings['etc_puppet_hiera_yaml'] + '" > /etc/puppet/hiera.yaml'
-
-  config.vm.provision "shell",
-    inline: 'mkdir -p ' + project_settings['puppet_hiera_data_folder']
-
-  # Create link to common settings if it does not exist.
-  data_folder = project_settings['puppet_hiera_data_folder']
-  test_commands = "test -d #{data_folder} -a -L #{data_folder}/common.yaml"
-  action_commands = "mkdir -p #{data_folder} && ln -s /vagrant/Vagrantsettings.yaml #{data_folder}/common.yaml"
-  config.vm.provision "shell",
-    inline: "(#{test_commands}) || (#{action_commands})"
-
-  if (project_settings['puppet_development'] == 0)
-    # Remove existing modules.
-    if (project_settings['puppet_force_reinstall'] == 1)
+  if (project_settings['puppet_force_reinstall'] == 1)
+    # Remove installed puppet modules.
+    if (project_settings['puppet_development'] == 0)
       config.vm.provision "shell",
-        inline: "rm -rf /etc/puppet/modules"
+        path: 'https://raw.githubusercontent.com/devgateway/happy-deployer/v' + project_settings['puppet_module_version'] + '/shell/remove-modules.sh'
+    elsif (project_settings['puppet_development'] == 1)
+      config.vm.provision "shell",
+        path: project_settings['happy_deployer_path'] + '/shell/remove-modules.sh'
     end
+  end
 
-    # Install the happydev puppet module and dependencies if not already installed.
+  # Prepare the box using a shell script.
+  if (project_settings['puppet_development'] == 0)
+    config.vm.provision "shell",
+      path: 'https://raw.githubusercontent.com/devgateway/happy-deployer/v' + project_settings['puppet_module_version'] + '/shell/setup-hiera.sh'
+  elsif (project_settings['puppet_development'] == 1)
+    config.vm.provision "shell",
+      path: project_settings['happy_deployer_path'] + '/shell/setup-hiera.sh'
+  end
+
+  # Install the happydev puppet module and dependencies if not already installed.
+  if (project_settings['puppet_development'] == 0)
     test_commands = "test -d /etc/puppet/modules/happydev"
     action_commands = "puppet module install " + project_settings['puppet_module_name'] + " --version " + project_settings['puppet_module_version']
     config.vm.provision "shell",
@@ -100,19 +94,16 @@ Vagrant.configure(API_VERSION) do |config|
   if (project_settings['puppet_development'] == 0 && project_settings['puppet_manifest_file_contents'])
     # Create a custom puppet manifest file.
     config.vm.provision "shell",
-      inline: 'mkdir -p /tmp/manifests && echo "' + project_settings['puppet_manifest_file_contents'] + '" > /tmp/manifests/default.pp'
+      inline: 'mkdir -p /etc/puppet/manifests && echo "' + project_settings['puppet_manifest_file_contents'] + '" > /etc/puppet/manifests/site.pp'
   end
 
   config.vm.provision 'puppet' do |puppet|
     if (project_settings['puppet_development'] == 0)
       # 1. Default Puppet settings:
       puppet.options = project_settings['puppet_options']
-
-      puppet.manifests_path = ['vm', '/tmp/manifests']
-      puppet.manifest_file = 'default.pp'
-    else
+    elsif (project_settings['puppet_development'] == 1)
       # 2. Development Puppet settings:
-      puppet.options = project_settings['puppet_development_options']
+      puppet.options = project_settings['puppet_options_dev']
 
       puppet.manifests_path = project_settings['happy_deployer_path'] + '/puppet/manifests'
       puppet.manifest_file = project_settings['puppet_alternative_manifest_file']
@@ -123,7 +114,7 @@ Vagrant.configure(API_VERSION) do |config|
     # Variables passed to puppet files.
     puppet.facter = {
       'fqdn_underscore' => project_settings['domain'].gsub(/[^A-Za-z0-9]/, "_"),
-      'environment' => project_settings['environment'],
+      'environment' => project_settings['project_environment'],
     }
   end
 end

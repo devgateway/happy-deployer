@@ -37,6 +37,11 @@ pgsql_databases:
     user: seccond_user
     pass: 'this_is_another_random_generated_password!'
 
+# mongo_databases:
+#   - name: main_database
+#     user: main_user
+#     pass: 'this_is_a_random_generated_password!'
+
 ########################################
 # Vagrant settings.
 

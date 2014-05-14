@@ -92,6 +92,7 @@ class happydev::apache_php (
     # 'mcrypt',
     'mysql',
     'pdo',
+    'pecl-mongo',
     'pgsql',
     #'php-gettext',
     'xml',

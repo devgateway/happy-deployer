@@ -1,10 +1,7 @@
 # = Class: happydev::fairy_dust::vanilla_cream
 #
 
-class happydev::fairy_dust::vanilla_cream (
-  $epel_repo = false,
-) {
-
+class happydev::fairy_dust::vanilla_cream {
   if $::kernel == 'Linux' {
     Exec { path => [ '/bin/', '/sbin/' , '/usr/bin/', '/usr/sbin/' ] }
 
@@ -13,18 +10,9 @@ class happydev::fairy_dust::vanilla_cream (
       ensure => present,
     }
 
-    # Install Joe's Own Editor.
+    # Install "Joe's Own Editor" editor.
     package { 'joe':
       ensure => present,
-    }
-
-    # Updat the 'message of the day'.
-    # @see http://linux.die.net/man/5/motd
-    $project_name = hiera('hostname', 'localhost')
-    $project_environment = hiera('environment', 'LOCAL')
-    file { '/etc/motd':
-      content => template('happydev/etc-motd.erb'),
-      ensure  => file,
     }
   }
 }

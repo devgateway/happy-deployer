@@ -25,7 +25,7 @@ class happydev::apache_php (
   $domain = hiera('domain', 'localhost.localdomain'),
 ) {
 
-  # Install and configure apache
+  # Install and configure Apache HTTP
   class { '::apache':
     # Run apache as vagrant.
     user => 'vagrant',

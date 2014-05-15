@@ -13,7 +13,7 @@ class happydev::pgsql (
   $databases = hiera('pgsql_databases', []),
 ) {
 
-  # Configure PostgreSQL.
+  # Install and configure PostgreSQL.
   class { 'postgresql::globals':
     manage_package_repo => true,
     version => '9.2',

@@ -1,5 +1,5 @@
 name 'SchnWalter-happydev'
-version '0.1.4'
+version '0.1.5'
 source 'https://github.com/devgateway/happy-deployer/tree/master/puppet/modules/happydev'
 author 'Development Gateway'
 license 'MIT License'
@@ -20,4 +20,5 @@ dependency 'rafaelfc/pear', '1.x'
 
 dependency 'puppetlabs/mysql', '2.x'
 dependency 'puppetlabs/postgresql', '3.x'
+dependency 'puppetlabs/mongodb', '>= 0.7.0'
 dependency 'puppetlabs/concat', '>= 1.0.0 <2.0.0'

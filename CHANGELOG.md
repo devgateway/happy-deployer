@@ -1,9 +1,16 @@
 happy-deployer CHANGELOG
 =====================
 
+0.1.5
+-----
+* Add MongoDB support.
+* Reduce complexity of the example Vagrantfile and Vagrantsettings.yaml.
+* Support multiple projects in the same VM.
+* Add custom [veewee](https://github.com/jedi4ever/veewee) template for Scientific Linux 64-bit v5.5.
+
 0.1.4
 -----
-* Cleanup Vagarantfile and Vagrantsettings.yaml
+* Cleanup Vagarantfile and Vagrantsettings.yaml.
 * Fix php settings update functionality.
 
 0.1.3
@@ -21,4 +28,4 @@ happy-deployer CHANGELOG
 
 0.1.0
 -----
-* Initial release of happy-deployer
+* Initial release of happy-deployer.

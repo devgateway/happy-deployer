@@ -3,21 +3,30 @@
 ########################################
 # Project specific settings.
 
-# A fixed ip for the VM, should be unique.
-internal_ip: 10.10.10.10
-hostname: the-project
+# VM specific infromation:
+#  - vm_hostonlyip should be unique among your virtual machines.
+#  - the VM hostname is created using vm_shortname and vm_environment.
+vm_hostonlyip: 10.10.10.10
+vm_shortname: the-project
+vm_environment: local
 
-# FQDN and aliases
-domain: the-project.dev
-aliases:
-  - www.the-project.dev
-
-# The type of the environment, not really doing anything at the moment.
-environment: LOCAL
-
-# Mount the current folder in the project document root.
-# NOTE: used by config.vm.synced_folder in your Vagrantfile
-docroot: /var/www/the-project
+# Vhosts and shared folders:
+#  - template is the name of the template used to create the vhost.
+#  - source points to a folder on the host OS, it can be a relative path.
+#  - docroot points to a folder in the gues where source is mounted.
+vhosts:
+  - domain: the-project.dev
+    aliases:
+      - www.the-project.dev
+    template: default
+    source: ./
+    docroot: /var/www/the-project
+  - domain: another-project.dev
+    aliases:
+      - www.another-project.dev
+    template: alternative
+    source: ../another-project
+    docroot: /var/www/another-project
 
 ####################
 # Database specific settings.
@@ -26,16 +35,21 @@ docroot: /var/www/the-project
 # mysql_databases:
 #   - name: main_database
 #     user: main_user
-#     pass: this_is_a_random_generated_password!
+#     pass: 'this_is_a_random_generated_password!'
 
 pgsql_root_password: 'this_is_a_random_password'
 pgsql_databases:
   - name: main_database
     user: main_user
-    pass: this_is_a_random_generated_password!
+    pass: 'this_is_a_random_generated_password!'
   - name: seccond_database
     user: seccond_user
-    pass: this_is_another_random_generated_password!
+    pass: 'this_is_another_random_generated_password!'
+
+# mongo_databases:
+#   - name: main_database
+#     user: main_user
+#     pass: 'this_is_a_random_generated_password!'
 
 ########################################
 # Vagrant settings.
@@ -58,35 +72,19 @@ puppet_development: 0
 puppet_options:
   --parser future
   --verbose
+  --debug
 
 # Development options for the "puppet apply"
 # NOTE: "--parser future" is required!
-puppet_development_options:
+puppet_options_dev:
   --parser future
   --verbose
   --debug
 
-# Hiera configuration for puppet. Goes as content into /etc/puppet/hiera.yaml
-puppet_hiera_data_folder: /etc/puppet/modules/site/data
-
-# <<<data_folder>>> is a placeholder for $puppet_hiera_data_folder
-etc_puppet_hiera_yaml: |
-  ---
-  :backends:
-    - yaml
-
-  :yaml:
-    :datadir: <<<data_folder>>>
-
-  :hierarchy:
-    - %{fqdn_underscore}
-    - %{environment}
-    - common
-
 ####################
 # Puppet settings for non-development mode:
 puppet_module_name: SchnWalter/happydev
-puppet_module_version: 0.1.3
+puppet_module_version: 0.1.5
 
 # HACK-ishly remove existing modules and then reinstall.
 puppet_force_reinstall: 0
@@ -94,9 +92,9 @@ puppet_force_reinstall: 0
 puppet_manifest_file_contents: |
   node default {
     # Do some magic!
-    class { '::happydev::fairy_dust::water_lily': } ->
     class { '::happydev::rhel': } ->
     class { '::happydev::fairy_dust::orange_blossom': } ->
+    class { '::happydev::fairy_dust::water_lily': } ->
     class { '::happydev::pgsql': } ->
     class { '::happydev::apache_php': }
   }
@@ -110,4 +108,4 @@ happy_deployer_path: ../happy-deployer
 
 # Alternative (development) manifest file, located in the puppet/manifests folder inside happy-deployer:
 # Replaces puppet_manifest_file_contents only when in puppet development "mode".
-puppet_alternative_manifest_file: lamp.pp
+puppet_alternative_manifest_file: default.pp

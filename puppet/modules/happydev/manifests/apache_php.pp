@@ -21,8 +21,7 @@
 #
 
 class happydev::apache_php (
-  $docroot = hiera('docroot', '/var/www'),
-  $domain = hiera('domain', 'localhost.localdomain'),
+  $vhosts = hiera('vhosts', []),
 ) {
 
   # Install and configure Apache HTTP
@@ -34,6 +33,12 @@ class happydev::apache_php (
     # http://httpd.apache.org/docs/2.2/mod/core.html#enablesendfile
     # https://forums.virtualbox.org/viewtopic.php?f=7&t=56066
     sendfile => 'Off',
+
+    # Do not create a default vhost.
+    default_vhost => false,
+
+    # Move the location of vhosts.
+    vhost_dir => '/etc/httpd/vhosts.d',
   }
 
   # Make sure mod_php and all dependencies are enabled after PHP is installed.
@@ -41,17 +46,30 @@ class happydev::apache_php (
     require => Package['php']
   }
 
-  # Setup project virtual host.
-  apache::vhost { $domain:
-    port => '80',
-    docroot => $docroot,
-    override => 'all',
-    docroot_owner => 'vagrant',
-    docroot_group => 'vagrant',
-    # Make _rewrite.erb print "RewriteEngine On", also enables mod_rewrite
-    rewrites => [{}],
+  # Setup virtual hosts.
+  each($vhosts) |$vhostinfo| {
+    apache::vhost { $vhostinfo['domain']:
+      port => '80',
+      serveraliases => $vhostinfo['aliases'],
 
-    require => File[$docroot],
+      docroot => $vhostinfo['docroot'],
+      docroot_owner => 'vagrant',
+      docroot_group => 'vagrant',
+
+      override => 'all',
+      # Make _rewrite.erb print "RewriteEngine On", also enables mod_rewrite
+      rewrites => [{}],
+
+      require => File[$vhostinfo['docroot']],
+    }
+
+    # Change the owner and group of the document root.
+    file { $vhostinfo['docroot']:
+      ensure => directory,
+      group => 'vagrant',
+      owner => 'vagrant',
+      # recurse => true,
+    }
   }
 
   # Setup iptables to allow access to the HTTP server.
@@ -61,16 +79,8 @@ class happydev::apache_php (
     action => accept,
   }
 
-  # # Change the owner and group of the document root.
-  file { $docroot:
-    ensure => directory,
-    group => 'vagrant',
-    owner => 'vagrant',
-    # recurse => true,
-  }
-
-  # @TODO: Test if web server is accessible from all IPs of the server!
-  # file { "${docroot}/test.html":
+  # @TODO: Test if web erver is accessible from all IPs of the server!
+  # file { "$vhosts['0']['domain']/test.html":
   #   ensure  => file,
   #   content => 'The webserver works just fine!!!',
   #   group => 'vagrant',
@@ -162,7 +172,7 @@ class happydev::apache_php (
     }
   }
 
-  # file { "${docroot}/test.php":
+  # file { "$vhosts['0']['domain']/test.php":
   #   ensure  => file,
   #   content => '<?php phpinfo();',
   #   group => 'vagrant',

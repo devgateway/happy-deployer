@@ -3,21 +3,30 @@
 ########################################
 # Project specific settings.
 
-# A fixed ip for the VM, should be unique.
-internal_ip: 10.10.10.10
-hostname: the-project
+# VM specific infromation:
+#  - vm_hostonlyip should be unique among your virtual machines.
+#  - the VM hostname is created using vm_shortname and vm_environment.
+vm_hostonlyip: 10.10.10.10
+vm_shortname: the-project
+vm_environment: local
 
-# FQDN and aliases
-domain: the-project.dev
-aliases:
-  - www.the-project.dev
-
-# The type of the environment, not really doing anything at the moment.
-project_environment: local
-
-# Mount the current folder in the project document root.
-# NOTE: used by config.vm.synced_folder in your Vagrantfile
-docroot: /var/www/the-project
+# Vhosts and shared folders:
+#  - template is the name of the template used to create the vhost.
+#  - source points to a folder on the host OS, it can be a relative path.
+#  - docroot points to a folder in the gues where source is mounted.
+vhosts:
+  - domain: the-project.dev
+    aliases:
+      - www.the-project.dev
+    template: default
+    source: ./
+    docroot: /var/www/the-project
+  - domain: another-project.dev
+    aliases:
+      - www.another-project.dev
+    template: alternative
+    source: ../another-project
+    docroot: /var/www/another-project
 
 ####################
 # Database specific settings.
@@ -63,6 +72,7 @@ puppet_development: 0
 puppet_options:
   --parser future
   --verbose
+  --debug
 
 # Development options for the "puppet apply"
 # NOTE: "--parser future" is required!

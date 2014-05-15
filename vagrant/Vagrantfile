@@ -7,7 +7,8 @@
 # Load some project specific settings form YAML files.
 require 'yaml'
 project_settings = YAML.load_file('Vagrantsettings.yaml')
-# abort(project_settings.inspect) # print variable and exit
+project_settings['vm_hostname'] = project_settings['vm_shortname'] + '-' + project_settings['vm_environment']
+# abort(project_settings.inspect) # print variables and exit
 
 # Vagrantfile API version.
 # @see http://docs.vagrantup.com/v2/vagrantfile/machine_settings.html
@@ -20,8 +21,8 @@ Vagrant.configure(API_VERSION) do |config|
   config.vm.box_download_checksum = project_settings['box']['download_checksum']
   config.vm.box_download_checksum_type = project_settings['box']['download_checksum_type']
 
-  # Setup the VM hostname
-  config.vm.hostname = project_settings['domain']
+  # Setup the VM hostname.
+  config.vm.hostname = project_settings['vm_hostname']
 
   ########################################
   # Setup VM access:
@@ -30,11 +31,15 @@ Vagrant.configure(API_VERSION) do |config|
   # config.vm.network :forwarded_port, guest: 80, host: 8080
 
   # 2. Add a new virtual network inteface card with a fixed IP.
-  config.vm.network :private_network, ip: project_settings['internal_ip']
+  config.vm.network :private_network, ip: project_settings['vm_hostonlyip']
 
   # Settings for the vagrant-hostsupdater plugin.
   # @see https://github.com/cogitatio/vagrant-hostsupdater
-  config.hostsupdater.aliases = project_settings['aliases']
+  config.hostsupdater.aliases = []
+  for vhost in project_settings['vhosts']
+    config.hostsupdater.aliases = config.hostsupdater.aliases + [vhost['domain']]
+    config.hostsupdater.aliases = config.hostsupdater.aliases + vhost['aliases']
+  end
   # config.hostsupdater.remove_on_suspend = true
 
   # For MacOS:
@@ -45,12 +50,10 @@ Vagrant.configure(API_VERSION) do |config|
 
   ########################################
 
-  # Set the environment name
-  # config.vm.define project_settings['environment'] do |host|
-  # end
-
-  # Mount the current folder in the project document root.
-  config.vm.synced_folder './', project_settings['docroot']
+  # Mount all the project document root folders into the gues OS.
+  for vhost in project_settings['vhosts']
+    config.vm.synced_folder vhost['source'], vhost['docroot']
+  end
 
   config.vm.provider :virtualbox do |v|
     # v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
@@ -113,8 +116,8 @@ Vagrant.configure(API_VERSION) do |config|
 
     # Variables passed to puppet files.
     puppet.facter = {
-      'fqdn_underscore' => project_settings['domain'].gsub(/[^A-Za-z0-9]/, "_"),
-      'environment' => project_settings['project_environment'],
+      'fqdn' => project_settings['vhosts'].first['domain'],
+      'environment' => project_settings['vm_environment'],
     }
   end
 end

@@ -6,9 +6,9 @@
 #
 
 class happydev::fairy_dust::orange_blossom (
-  $project_docroot = hiera('docroot', '/var/www'),
-  $project_environment = hiera('project_environment', 'local'),
-  $project_hostname = hiera('hostname', 'the-project'),
+  $project_environment = hiera('vm_environment', 'local'),
+  $project_hostname = hiera('vm_hostname', 'the-project'),
+  $vhosts = hiera('vhosts', []),
 ) {
   if $::kernel == 'Linux' {
     Exec { path => [ '/bin/', '/sbin/' , '/usr/bin/', '/usr/sbin/' ] }
@@ -34,6 +34,7 @@ class happydev::fairy_dust::orange_blossom (
       ensure  => file,
     }
 
+    $project_docroot = $vhosts['0']['docroot']
     file { '/etc/profile.d/custom.sh':
       content => template('happydev/bash-custom.sh.erb'),
       ensure  => file,

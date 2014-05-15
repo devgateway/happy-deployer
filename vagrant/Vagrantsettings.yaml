@@ -91,12 +91,11 @@ puppet_force_reinstall: 0
 
 puppet_manifest_file_contents: |
   node default {
-    # Do some magic!
-    class { '::happydev::rhel': } ->
-    class { '::happydev::fairy_dust::orange_blossom': } ->
-    class { '::happydev::fairy_dust::water_lily': } ->
-    class { '::happydev::pgsql': } ->
-    class { '::happydev::apache_php': }
+    class { '::happydev::rhel': }
+    -> class { '::happydev::fairy_dust::orange_blossom': }
+    -> class { '::happydev::fairy_dust::water_lily': }
+    -> class { '::happydev::pgsql': }
+    -> class { '::happydev::apache_php': }
   }
 
 ####################

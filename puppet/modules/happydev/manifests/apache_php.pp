@@ -1,20 +1,13 @@
 # = Class: happydev::apache_php
 #
 # == Requires:
-#
-# * 'puppetlabs/apache', '1.x'
-#   @see http://forge.puppetlabs.com/puppetlabs/apache
-# * 'puppetlabs/firewall', '1.x'
-#   @see http://forge.puppetlabs.com/puppetlabs/firewall
-# * 'example42/php', '2.x'
-#   @see http://forge.puppetlabs.com/example42/php
-# * 'example42/puppi', '>= 2.0.0'
-#   @see http://forge.puppetlabs.com/example42/puppi
-# * 'rafaelfc/pear', '1.x'
-#   @see http://forge.puppetlabs.com/rafaelfc/pear
+# * http://forge.puppetlabs.com/puppetlabs/apache
+# * http://forge.puppetlabs.com/puppetlabs/firewall
+# * http://forge.puppetlabs.com/example42/php
+# * http://forge.puppetlabs.com/example42/puppi
+# * http://forge.puppetlabs.com/rafaelfc/pear
 #
 # == TODO:
-#
 # * Run apache as a differend user!
 # * Do not try to install pecl plugins a seccond time
 # * Test if web server is accessible from all IPs of the server!

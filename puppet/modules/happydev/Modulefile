@@ -8,17 +8,16 @@ description 'Quickly creates a basic development environment.'
 project_page 'https://github.com/devgateway/happy-deployer'
 
 
-# Yes we require all of these, even if we don't use them all.
-dependency 'puppetlabs/stdlib', '3.x'
+dependency 'puppetlabs/stdlib', '3.2.x'
 
-dependency 'puppetlabs/apache', '1.x'
-#dependency 'puppetlabs/nginx', '>= 0.0.1'
-dependency 'puppetlabs/firewall', '1.x'
-dependency 'example42/php', '2.0.18'
-dependency 'example42/puppi', '>= 2.0.0'
-dependency 'rafaelfc/pear', '1.x'
+dependency 'puppetlabs/apache', '1.0.x'
+#dependency 'jfryman/nginx', '0.0.9'
+dependency 'puppetlabs/firewall', '1.0.x'
+dependency 'example42/php', '2.0.x'
+dependency 'example42/puppi', '2.1.x'
+dependency 'rafaelfc/pear', '1.0.x'
 
-dependency 'puppetlabs/mysql', '2.x'
-dependency 'puppetlabs/postgresql', '3.x'
-dependency 'puppetlabs/mongodb', '>= 0.7.0'
-dependency 'puppetlabs/concat', '>= 1.0.0 <2.0.0'
+dependency 'puppetlabs/mysql', '2.2.x'
+dependency 'puppetlabs/postgresql', '3.3.x'
+dependency 'puppetlabs/mongodb', '0.7.x'
+dependency 'puppetlabs/concat', '1.0.x'

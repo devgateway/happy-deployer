@@ -1,7 +1,5 @@
 # = Class: happydev::fairy_dust::water_lily
 #
-# == Requires:
-#
 
 class happydev::fairy_dust::water_lily {
   if $::kernel == 'Linux' {

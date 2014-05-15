@@ -1,11 +1,8 @@
 # = Class: happydev::mongodb
 #
 # == Requires:
-#
-# * 'puppetlabs/mongodb', '0.7.0'
-#   @see http://forge.puppetlabs.com/puppetlabs/mongodb
-# * 'puppetlabs/stdlib', '3.2.1'
-#   @see http://forge.puppetlabs.com/puppetlabs/stdlib
+# * http://forge.puppetlabs.com/puppetlabs/mongodb
+# * http://forge.puppetlabs.com/puppetlabs/stdlib
 #
 
 class happydev::mongodb (

@@ -1,9 +1,5 @@
 # = Class: happydev::fairy_dust::orange_blossom
 #
-# == Requires:
-#
-# * happydev::rhel
-#
 
 class happydev::fairy_dust::orange_blossom (
   $project_environment = hiera('vm_environment', 'local'),

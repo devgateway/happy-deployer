@@ -104,6 +104,9 @@ Vagrant.configure(API_VERSION) do |config|
     if (project_settings['puppet_development'] == 0)
       # 1. Default Puppet settings:
       puppet.options = project_settings['puppet_options']
+
+      puppet.manifests_path = ['vm', '/etc/puppet/manifests']
+      puppet.manifest_file = 'site.pp'
     elsif (project_settings['puppet_development'] == 1)
       # 2. Development Puppet settings:
       puppet.options = project_settings['puppet_options_dev']

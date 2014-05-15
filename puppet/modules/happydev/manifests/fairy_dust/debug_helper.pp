@@ -1,6 +1,8 @@
 # = Class: happydev::fairy_dust::debug_helper
 #
-# @TODO: Extend this helper file.
+# == TODO:
+# * Extend this helper file.
+#
 
 class happydev::fairy_dust::debug_helper {
   if $::kernel == 'Linux' {

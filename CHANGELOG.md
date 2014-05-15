@@ -1,6 +1,10 @@
 happy-deployer CHANGELOG
 =====================
 
+0.1.6
+-----
+* Finetune version numbers for dependencies.
+
 0.1.5
 -----
 * Add MongoDB support.

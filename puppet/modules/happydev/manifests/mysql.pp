@@ -1,9 +1,7 @@
 # = Class: happydev::mysql
 #
 # == Requires:
-#
-# * 'puppetlabs/mysql', '2.x'
-#   @see http://forge.puppetlabs.com/puppetlabs/mysql
+# * http://forge.puppetlabs.com/puppetlabs/mysql
 #
 
 class happydev::mysql (

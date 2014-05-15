@@ -1,7 +1,6 @@
 # = Class: happydev::rhel
 #
 # == TODO:
-#
 # * Only install FastestMirror on dev environments, manually add a fast mirror
 #   on production environments.
 # * Make sure 'yum update' isn't trigger every time.

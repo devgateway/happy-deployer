@@ -84,19 +84,18 @@ puppet_options_dev:
 ####################
 # Puppet settings for non-development mode:
 puppet_module_name: SchnWalter/happydev
-puppet_module_version: 0.1.5
+puppet_module_version: 0.1.6
 
 # HACK-ishly remove existing modules and then reinstall.
 puppet_force_reinstall: 0
 
 puppet_manifest_file_contents: |
   node default {
-    # Do some magic!
-    class { '::happydev::rhel': } ->
-    class { '::happydev::fairy_dust::orange_blossom': } ->
-    class { '::happydev::fairy_dust::water_lily': } ->
-    class { '::happydev::pgsql': } ->
-    class { '::happydev::apache_php': }
+    class { '::happydev::rhel': }
+    -> class { '::happydev::fairy_dust::orange_blossom': }
+    -> class { '::happydev::fairy_dust::water_lily': }
+    -> class { '::happydev::pgsql': }
+    -> class { '::happydev::apache_php': }
   }
 
 ####################

@@ -1,16 +1,11 @@
 # = Class: happydev::nginx_php
 #
 # == Requires:
-#
-# * 'puppetlabs/nginx', '>= 0.0.1'
-#   @see http://forge.puppetlabs.com/puppetlabs/nginx
-# * 'puppetlabs/firewall', '1.x'
-#   @see http://forge.puppetlabs.com/puppetlabs/firewall
-# * 'example42/php', '2.x'
-#   @see http://forge.puppetlabs.com/example42/php
+# * http://forge.puppetlabs.com/puppetlabs/nginx
+# * http://forge.puppetlabs.com/puppetlabs/firewall
+# * http://forge.puppetlabs.com/example42/php
 #
 # == TODO:
-#
 # * Make it do something!
 #
 

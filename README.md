@@ -7,7 +7,7 @@ Requirements
 * [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 * [Vagrant](http://www.vagrantup.com/downloads.html)
 * [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest)
-* [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater) (works on linux only)
+* [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater) (tested on linux and Mac OS)
 
 
 Setup Instructions

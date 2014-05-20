@@ -1,5 +1,5 @@
 name 'SchnWalter-happydev'
-version '0.1.6'
+version '0.1.7'
 source 'https://github.com/devgateway/happy-deployer/tree/master/puppet/modules/happydev'
 author 'Development Gateway'
 license 'MIT License'
@@ -13,9 +13,9 @@ dependency 'puppetlabs/stdlib', '3.2.x'
 dependency 'puppetlabs/apache', '1.0.x'
 #dependency 'jfryman/nginx', '0.0.9'
 dependency 'puppetlabs/firewall', '1.0.x'
+
 dependency 'example42/php', '2.0.x'
 dependency 'example42/puppi', '2.1.x'
-dependency 'rafaelfc/pear', '1.0.x'
 
 dependency 'puppetlabs/mysql', '2.2.x'
 dependency 'puppetlabs/postgresql', '3.3.x'

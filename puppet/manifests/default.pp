@@ -1,5 +1,5 @@
 
-# Copy a node to awesome-project.pp and make sure Vagrantsettings.yml points to the new file.
+# Copy a node to awesome-project.pp and make sure Vagrantsettings.yml uses the new manifest file.
 
 node default {
   info('You just built yourself an empty VM!')
@@ -10,22 +10,17 @@ node /^awesome-.+$/  {
 }
 
 node 'db_server' {
-  class { '::happydev::pgsql': }
+  include ::happydev::rhel
+  include ::happydev::fairy_dust::orange_blossom
+  include ::happydev::pgsql
 }
 
-node 'orange_blossom' {
-  # Do some magic!
-  class { '::happydev::rhel': } ->
-  class { '::happydev::fairy_dust::orange_blossom': } ->
-  class { '::happydev::mysql': } ->
-  class { '::happydev::pgsql': } ->
-  class { '::happydev::apache_php': }
-}
+node 'lamp' {
+  # Export facts to /tmp/facts.yaml.
+  # include ::happydev::fairy_dust::debug_helper
 
-node 'vanilla_cream' {
-  # Do some magic!
-  class { '::happydev::rhel': } ->
-  class { '::happydev::fairy_dust::vanilla_cream': } ->
-  class { '::happydev::pgsql': } ->
-  class { '::happydev::apache_php': }
+  include ::happydev::rhel
+  include ::happydev::mysql
+  include ::happydev::apache
+  include ::happydev::php
 }

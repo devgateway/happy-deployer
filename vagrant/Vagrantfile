@@ -56,8 +56,14 @@ Vagrant.configure(API_VERSION) do |config|
   end
 
   config.vm.provider :virtualbox do |v|
-    # v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-    v.customize ["modifyvm", :id, "--memory", 1024]
+    # Use the host's resolver mechanisms to handle DNS requests.
+    v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+
+    # Set the amount of RAM, in MB, allocated to the virtual machine.
+    v.customize ["modifyvm", :id, "--memory", 2048]
+
+    # Set the number of virutal CPUs allocated to the virtual machine.
+    v.customize ["modifyvm", :id, "--cpus", 2]
   end
 
   if (project_settings['puppet_force_reinstall'] == 1)

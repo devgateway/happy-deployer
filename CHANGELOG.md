@@ -1,6 +1,11 @@
 happy-deployer CHANGELOG
 =====================
 
+0.1.7
+-----
+* Use the host's resolver mechanisms to handle DNS requests. Improves apparent Internet speed.
+* Improve PHP manifest file.
+
 0.1.6
 -----
 * Finetune version numbers for dependencies.
@@ -14,8 +19,8 @@ happy-deployer CHANGELOG
 
 0.1.4
 -----
-* Cleanup Vagarantfile and Vagrantsettings.yaml.
-* Fix php settings update functionality.
+* Cleanup Vagrantfile and Vagrantsettings.yaml.
+* Fix PHP settings update functionality.
 
 0.1.3
 -----

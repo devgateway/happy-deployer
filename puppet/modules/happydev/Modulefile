@@ -15,7 +15,6 @@ dependency 'puppetlabs/apache', '1.0.x'
 dependency 'puppetlabs/firewall', '1.0.x'
 dependency 'example42/php', '2.0.x'
 dependency 'example42/puppi', '2.1.x'
-dependency 'rafaelfc/pear', '1.0.x'
 
 dependency 'puppetlabs/mysql', '2.2.x'
 dependency 'puppetlabs/postgresql', '3.3.x'

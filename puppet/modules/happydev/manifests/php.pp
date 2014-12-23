@@ -37,7 +37,6 @@ class happydev::php {
 
   # Install required PHP modules.
   $php_modules = [
-    'curl',
     'gd',
     # 'geoip',
     'intl',

@@ -25,7 +25,7 @@ class happydev::apache (
 
     # http://httpd.apache.org/docs/2.2/mod/core.html#enablesendfile
     # https://forums.virtualbox.org/viewtopic.php?f=7&t=56066
-    sendfile => 'Off',
+    sendfile       => 'Off',
 
     # Do not create a default vhost.
     default_vhost  => false,

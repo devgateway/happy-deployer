@@ -11,10 +11,10 @@
 
 class happydev::nginx_php (
   $docroot = '',
-  $domain = '',
+  $domain  = '',
 ) {
 
-  notify { 'Looks like you want to install Nginx... tough luck, nobody bothered to try and set it up!': }
+  notify { 'Looks like you want to install Nginx... tough luck!': }
 
   # Setup iptables to allow access to the HTTP server.
   # firewall { '100 allow HTTP and HTTPS access':

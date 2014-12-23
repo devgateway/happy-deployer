@@ -22,7 +22,7 @@ class happydev::php {
         Package['httpd'],
         Package['php'],
       ],
-      notify => Service['httpd'],
+      notify  => Service['httpd'],
     }
 
     # Always proccess after apache and 'request' a httpd restart when finished!
@@ -123,7 +123,8 @@ class happydev::php {
   # Create a simbolic link and aliases for drush.
   file { '/usr/bin/drush':
     ensure  => link,
-    target  => "${composer_home}/vendor/drush/drush/drush", # drush is the vedor, the application name and the executable.
+    # drush is the vendor, the application folder name and the executable.
+    target  => "${composer_home}/vendor/drush/drush/drush",
     require => Exec['install-drush'],
   } ->
   file { '/etc/profile.d/custom-drush.sh':

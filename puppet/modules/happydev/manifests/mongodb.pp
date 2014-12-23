@@ -7,7 +7,7 @@
 
 class happydev::mongodb (
   $root_password = hiera('pgsql_root_password', 'this_is_a_random_password'),
-  $databases = hiera('mongo_databases', []),
+  $databases     = hiera('mongo_databases', []),
 ) {
 
   # Install and configure MongoDB.

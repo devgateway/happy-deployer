@@ -6,8 +6,8 @@
 #
 
 class happydev::pgsql (
-  $root_password = hiera('pgsql_root_password', 'this_is_a_random_password'),
-  $databases = hiera('pgsql_databases', []),
+  $root_password       = hiera('pgsql_root_password', 'this_is_a_random_password'),
+  $databases           = hiera('pgsql_databases', []),
   $allow_remote_access = hiera('pgsql_allow_remote_access', false),
 ) {
 

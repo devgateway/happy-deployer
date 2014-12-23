@@ -30,9 +30,39 @@ class happydev::pgsql (
 
   # Create the databases.
   each($databases) |$dbinfo| {
+    # Prepare variables for the Password File.
+    # @see http://www.postgresql.org/docs/9.2/static/libpq-pgpass.html
+    if (empty($dbinfo['host'])) {
+      $host = 'localhost'
+    }
+    else {
+      $host = $dbinfo['host']
+    }
+    if (empty($dbinfo['port'])) {
+      $port = '5432'
+    }
+    else {
+      $port = $dbinfo['port']
+    }
+    $pgpass_info = [
+      $host,
+      $port,
+      $dbinfo['name'],
+      $dbinfo['user'],
+      $dbinfo['pass'],
+    ]
+
     postgresql::server::db { $dbinfo['name']:
       user => $dbinfo['user'],
       password => postgresql_password($dbinfo['user'], $dbinfo['pass']),
+    } ->
+    # Create password file.
+    file { '/home/vagrant/.pgpass':
+      ensure  => file,
+      content => join($pgpass_info, ':'),
+      mode    => '0600',
+      group => 'vagrant',
+      owner => 'vagrant',
     }
   }
 }

@@ -37,15 +37,16 @@ class happydev::php {
 
   # Install required PHP modules.
   $php_modules = [
-    # 'curl',
+    'curl',
     'gd',
     # 'geoip',
+    'intl',
     'mbstring',
     # 'mcrypt',
     'pdo',
     # 'devel',
     'pecl-xdebug',
-    #'gettext',
+    # 'php-gettext',
     'xml',
   ]
   php::module { $php_modules: }

@@ -1,11 +1,15 @@
 happy-deployer CHANGELOG
 =====================
 
+0.2.01
+-----
+* Removed CURL.
+
 0.2.0
 -----
 * Reverted puppet module metadata format, Puppet v3.6.0 is not aviablable in the RHEL repo.
 
-0.2.0
+0.1.9
 -----
 * Updated metadata for [Puppet Forge](https://forge.puppetlabs.com)
 

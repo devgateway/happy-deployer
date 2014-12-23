@@ -85,7 +85,7 @@ puppet_options_dev:
 ####################
 # Puppet settings for non-development mode:
 puppet_module_name: SchnWalter/happydev
-puppet_module_version: 0.2.0
+puppet_module_version: 0.2.01
 
 # HACK-ishly remove existing modules and then reinstall.
 puppet_force_reinstall: 0

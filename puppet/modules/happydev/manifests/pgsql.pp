@@ -8,7 +8,24 @@
 class happydev::pgsql (
   $root_password = hiera('pgsql_root_password', 'this_is_a_random_password'),
   $databases = hiera('pgsql_databases', []),
+  $allow_remote_access = hiera('pgsql_allow_remote_access', false),
 ) {
+
+  # Setup iptables to allow remote access to the PostgreSQL server.
+  if ($allow_remote_access) {
+    $listen_addresses = ['localhost', $ipaddress_eth1]
+
+    firewall { '125 allow PostgreSQL access':
+      port => [5432],
+      proto => tcp,
+      action => accept,
+      require => [
+        Class['::postgresql::server'],
+      ],
+    }
+  } else {
+    $listen_addresses = ['localhost']
+  }
 
   # Install and configure PostgreSQL.
   class { 'postgresql::globals':
@@ -18,6 +35,7 @@ class happydev::pgsql (
   } ->
   class { '::postgresql::server':
     postgres_password => $root_password,
+    listen_addresses => join($listen_addresses, ','),
   } ->
   # Set the output format for 'serialized strings'.
   # @see http://www.postgresql.org/docs/9.2/static/runtime-config-client.html
@@ -63,6 +81,21 @@ class happydev::pgsql (
       mode    => '0600',
       group => 'vagrant',
       owner => 'vagrant',
+    }
+
+    if ($allow_remote_access) {
+      # # Rule Name: allow remote access to dbname
+      # # Description: Opens up postgresql for remote access
+      # # Order: 150
+      # host  dbname  username  10.10.10.0/24  md5
+      postgresql::server::pg_hba_rule { "allow remote access to ${dbinfo['name']}":
+        description => 'allows remote access in the 10.10.10.0/24 subnet',
+        type => 'host',
+        database => $dbinfo['name'],
+        user => $dbinfo['user'],
+        address => '10.10.10.0/24',
+        auth_method => 'md5',
+      }
     }
   }
 }

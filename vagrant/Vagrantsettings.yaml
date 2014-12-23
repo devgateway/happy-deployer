@@ -37,6 +37,7 @@ vhosts:
 #     user: main_user
 #     pass: 'this_is_a_random_generated_password!'
 
+pgsql_allow_remote_access: false
 pgsql_root_password: 'this_is_a_random_password'
 pgsql_databases:
   - name: main_database

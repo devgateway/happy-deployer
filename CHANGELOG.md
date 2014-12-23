@@ -1,6 +1,10 @@
 happy-deployer CHANGELOG
 =====================
 
+0.1.9
+-----
+* Updated metadata for [Puppet Forge](https://forge.puppetlabs.com)
+
 0.1.8
 -----
 * Change list of installed PHP modules.

@@ -42,14 +42,22 @@ class happydev::php {
     # 'geoip',
     'mbstring',
     # 'mcrypt',
-    'mysql',
     'pdo',
-    'pecl-mongo',
-    'pgsql',
-    #'php-gettext',
+    # 'devel',
+    'pecl-xdebug',
+    #'gettext',
     'xml',
   ]
   php::module { $php_modules: }
+  if (defined(Class['happydev::mysql'])) {
+    php::module { 'mysql': }
+  }
+  if (defined(Class['happydev::mongodb'])) {
+    php::module { 'pecl-mongo': }
+  }
+  if (defined(Class['happydev::pgsql'])) {
+    php::module { 'pgsql': }
+  }
 
   php::ini { 'default':
     value => [
@@ -67,12 +75,15 @@ class happydev::php {
       'error_reporting = E_ALL | E_STRICT',
       'display_errors = On',
       'display_startup_errors = On',
+      '',
+      # @see http://www.xdebug.org/docs/all_settings
+      'xdebug.idekey = "vagrant-debug"',
+      'xdebug.remote_enable = 1',
+      'xdebug.remote_port = 9000',
+      'xdebug.remote_connect_back = 1',
     ],
     target => 'custom-devel.ini'
   }
-
-  # Install Xdebug.
-  # class { 'xdebug': }
 
   # Install Composer - A dependency manager for PHP
   $composer_home = '/opt/composer'

@@ -16,9 +16,9 @@ class happydev::pgsql (
     $listen_addresses = ['localhost', $ipaddress_eth1]
 
     firewall { '125 allow PostgreSQL access':
-      port => [5432],
-      proto => tcp,
-      action => accept,
+      port    => [5432],
+      proto   => tcp,
+      action  => accept,
       require => [
         Class['::postgresql::server'],
       ],
@@ -30,12 +30,12 @@ class happydev::pgsql (
   # Install and configure PostgreSQL.
   class { 'postgresql::globals':
     manage_package_repo => true,
-    version => '9.2',
+    version             => '9.2',
     # pg_hba_conf_defaults => false,
   } ->
   class { '::postgresql::server':
     postgres_password => $root_password,
-    listen_addresses => join($listen_addresses, ','),
+    listen_addresses  => join($listen_addresses, ','),
   } ->
   # Set the output format for 'serialized strings'.
   # @see http://www.postgresql.org/docs/9.2/static/runtime-config-client.html
@@ -79,8 +79,8 @@ class happydev::pgsql (
       ensure  => file,
       content => join($pgpass_info, ':'),
       mode    => '0600',
-      group => 'vagrant',
-      owner => 'vagrant',
+      group   => 'vagrant',
+      owner   => 'vagrant',
     }
 
     if ($allow_remote_access) {
@@ -90,10 +90,10 @@ class happydev::pgsql (
       # host  dbname  username  10.10.10.0/24  md5
       postgresql::server::pg_hba_rule { "allow remote access to ${dbinfo['name']}":
         description => 'allows remote access in the 10.10.10.0/24 subnet',
-        type => 'host',
-        database => $dbinfo['name'],
-        user => $dbinfo['user'],
-        address => '10.10.10.0/24',
+        type        => 'host',
+        database    => $dbinfo['name'],
+        user        => $dbinfo['user'],
+        address     => '10.10.10.0/24',
         auth_method => 'md5',
       }
     }

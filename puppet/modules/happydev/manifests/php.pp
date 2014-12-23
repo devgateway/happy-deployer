@@ -60,7 +60,7 @@ class happydev::php {
   }
 
   php::ini { 'default':
-    value => [
+    value  => [
       'max_execution_time = 60',
       'memory_limit = 512M',
       'post_max_size = 128M',
@@ -70,7 +70,7 @@ class happydev::php {
   }
 
   php::ini { 'devel':
-    value => [
+    value  => [
       'date.timezone = America/Chicago',
       'error_reporting = E_ALL | E_STRICT',
       'display_errors = On',
@@ -90,33 +90,33 @@ class happydev::php {
   Exec { environment => "COMPOSER_HOME=${composer_home}" }
   exec { 'install-composer':
     command => 'curl -sS https://getcomposer.org/installer | php',
-    cwd => $composer_home,
-    onlyif => 'test ! -f /usr/bin/composer', # checks for valid symbolic link.
+    cwd     => $composer_home,
+    onlyif  => 'test ! -f /usr/bin/composer', # checks for valid symbolic link.
     require => [
       Package['php'],
       File['/opt/composer'],
     ],
   } ->
   file { '/usr/bin/composer':
-    ensure  => link,
-    target  => "${composer_home}/composer.phar",
+    ensure => link,
+    target => "${composer_home}/composer.phar",
   }
 
   # Helper function.
   file { '/opt/composer':
-    ensure  => directory,
+    ensure => directory,
   }
 
   # Install Drush.
   exec { 'install-drush':
     command => 'composer global require drush/drush:6.*',
     require => Exec['install-composer'],
-    notify => Exec['install-drush-dependencies'],
-    onlyif => 'test ! -f /usr/bin/drush', # checks for valid symbolic link.
+    notify  => Exec['install-drush-dependencies'],
+    onlyif  => 'test ! -f /usr/bin/drush', # checks for valid symbolic link.
   }
 
   exec { 'install-drush-dependencies':
-    command => 'drush',
+    command     => 'drush',
     refreshonly => true,
   }
 

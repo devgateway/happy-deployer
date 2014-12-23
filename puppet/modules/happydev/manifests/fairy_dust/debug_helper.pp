@@ -11,6 +11,6 @@ class happydev::fairy_dust::debug_helper {
       content => inline_template("<%= scope.to_hash.reject { |k,v| !( k.is_a?(String) && v.is_a?(String) ) }.to_yaml %>\n"),
     }
 
-    info("Your facts have been saved to $dump_file!")
+    info("Your facts have been saved to ${dump_file}!")
   }
 }

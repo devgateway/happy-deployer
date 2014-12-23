@@ -17,8 +17,8 @@ class happydev::apache (
   # Install and configure Apache HTTP
   class { '::apache':
     # Run apache as vagrant.
-    user => 'vagrant',
-    group => 'vagrant',
+    user           => 'vagrant',
+    group          => 'vagrant',
 
     # Make sure the service is enabled when the machine is booted.
     service_enable => true,
@@ -28,43 +28,43 @@ class happydev::apache (
     sendfile => 'Off',
 
     # Do not create a default vhost.
-    default_vhost => false,
+    default_vhost  => false,
 
     # Move the location of vhosts.
-    vhost_dir => '/etc/httpd/vhosts.d',
+    vhost_dir      => '/etc/httpd/vhosts.d',
   }
 
   # Setup virtual hosts.
   each($vhosts) |$vhostinfo| {
     apache::vhost { $vhostinfo['domain']:
-      port => '80',
+      port          => '80',
       serveraliases => $vhostinfo['aliases'],
 
-      docroot => $vhostinfo['docroot'],
+      docroot       => $vhostinfo['docroot'],
       docroot_owner => 'vagrant',
       docroot_group => 'vagrant',
 
-      override => 'all',
+      override      => 'all',
       # Make _rewrite.erb print "RewriteEngine On", also enables mod_rewrite
-      rewrites => [{}],
+      rewrites      => [{}],
 
-      require => File[$vhostinfo['docroot']],
+      require       => File[$vhostinfo['docroot']],
     }
 
     # Change the owner and group of the document root.
     file { $vhostinfo['docroot']:
       ensure => directory,
-      group => 'vagrant',
-      owner => 'vagrant',
+      group  => 'vagrant',
+      owner  => 'vagrant',
       # recurse => true,
     }
   }
 
   # Setup iptables to allow access to the HTTP server.
   firewall { '100 allow HTTP and HTTPS access':
-    port => [80, 443],
-    proto => tcp,
-    action => accept,
+    port    => [80, 443],
+    proto   => tcp,
+    action  => accept,
     require => [
       Package['httpd'],
     ],

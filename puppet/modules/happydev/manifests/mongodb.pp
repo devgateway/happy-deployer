@@ -23,7 +23,7 @@ class happydev::mongodb (
   # Create the databases.
   each($databases) |$dbinfo| {
     mongodb::db { $dbinfo['name']:
-      user => $dbinfo['user'],
+      user          => $dbinfo['user'],
       password_hash => mongodb_password($dbinfo['user'], $dbinfo['pass']),
     }
   }

@@ -18,6 +18,12 @@ class happydev::pgsql (
   } ->
   class { '::postgresql::server':
     postgres_password => $root_password,
+  } ->
+  # Set the output format for 'serialized strings'.
+  # @see http://www.postgresql.org/docs/9.2/static/runtime-config-client.html
+  # ALTER DATABASE dbname SET bytea_output = 'escape';
+  postgresql::server::config_entry { 'bytea_output':
+    value => 'escape',
   }
 
   class { '::postgresql::server::contrib': }

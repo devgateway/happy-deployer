@@ -1,0 +1,68 @@
+{
+  "version": "0.1.8",
+  "name": "SchnWalter-happydev",
+  "summary": "Setup a Development Environment",
+  "author": "Development Gateway",
+  "project_page": "https://github.com/devgateway/happy-deployer",
+  "source": "https://github.com/devgateway/happy-deployer/tree/master/puppet/modules/happydev",
+  "issues_url": "https://github.com/devgateway/happy-deployer/issues",
+  "license": "MIT License",
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": ["6.0"]
+    }
+  ],
+  "tags": [
+    "redhat",
+    "scientific",
+    "development",
+    "lamp",
+    "apache",
+    "mysql",
+    "postgresql",
+    "mongodb",
+    "php",
+    "drupal",
+    "drush",
+    "linux"
+  ],
+  "dependencies": [
+    {
+      "version_requirement": "3.2.x",
+      "name": "puppetlabs/stdlib"
+    },
+    {
+      "version_requirement": "1.0.x",
+      "name": "puppetlabs/apache"
+    },
+    {
+      "version_requirement": "1.0.x",
+      "name": "puppetlabs/firewall"
+    },
+    {
+      "version_requirement": "2.0.x",
+      "name": "example42/php"
+    },
+    {
+      "version_requirement": "2.1.x",
+      "name": "example42/puppi"
+    },
+    {
+      "version_requirement": "2.2.x",
+      "name": "puppetlabs/mysql"
+    },
+    {
+      "version_requirement": "3.3.x",
+      "name": "puppetlabs/postgresql"
+    },
+    {
+      "version_requirement": "0.7.x",
+      "name": "puppetlabs/mongodb"
+    },
+    {
+      "version_requirement": "1.0.x",
+      "name": "puppetlabs/concat"
+    }
+  ]
+}

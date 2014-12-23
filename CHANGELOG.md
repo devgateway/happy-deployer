@@ -1,6 +1,14 @@
 happy-deployer CHANGELOG
 =====================
 
+0.1.8
+-----
+* Change list of installed PHP modules.
+* Setup xdebug for remote debugging.
+* Allow PostgreSQL remote debugging.
+* Add an entry for each PostgreSQL database in the password file of the vagrant user.
+* Set the PostgreSQL [bytea_output](http://www.postgresql.org/docs/9.2/static/runtime-config-client.html) to escape.
+
 0.1.7
 -----
 * Use the host's resolver mechanisms to handle DNS requests. Improves apparent Internet speed.

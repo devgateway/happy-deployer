@@ -11,10 +11,10 @@ class happydev::mysql (
 
   # Install and configure MySQL.
   class { '::mysql::server':
-    root_password => $root_password,
+    root_password    => $root_password,
 
     override_options => {
-      'mysqld' => {
+      'mysqld'    => {
         'max_allowed_packet' => '256M',
       },
       'mysqldump' => {
@@ -26,10 +26,10 @@ class happydev::mysql (
   # Create the databases.
   each($databases) |$dbinfo| {
     mysql::db { $dbinfo['name']:
-      user => $dbinfo['user'],
+      user     => $dbinfo['user'],
       password => $dbinfo['pass'],
-      host => 'localhost',
-      grant => ['ALL'],
+      host     => 'localhost',
+      grant    => ['ALL'],
     }
   }
 }

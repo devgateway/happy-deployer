@@ -24,7 +24,7 @@ class happydev::rhel (
           command => 'sed -i \'s/#\(mirrorlist.*sl-base-.*\)/\1/g\' /etc/yum.repos.d/sl.repo',
         } ->
         package { 'yum-plugin-fastestmirror':
-          ensure => latest,
+          ensure   => latest,
           provider => 'yum',
         } ->
         exec { 'yum clean all': }
@@ -42,14 +42,14 @@ class happydev::rhel (
         # A helper repository that helps to install the right EPEL repository.
         # @see http://stackoverflow.com/a/14155303
         yumrepo { 'epel-bootstrap':
-          descr    => "EPEL Bootstrap",
-          mirrorlist  => "http://mirrors.fedoraproject.org/mirrorlist?repo=epel-\$releasever&arch=\$basearch",
-          enabled  => 0,
-          gpgcheck => 0,
+          descr          => 'EPEL Bootstrap',
+          mirrorlist     => 'http://mirrors.fedoraproject.org/mirrorlist?repo=epel-\$releasever&arch=\$basearch',
+          enabled        => 0,
+          gpgcheck       => 0,
           failovermethod => 'priority',
         } ->
         package { 'epel-release':
-          ensure => installed,
+          ensure   => installed,
           provider => 'yum',
         } ->
         exec { 'disable epel-bootstrap':

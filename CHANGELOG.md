@@ -1,7 +1,7 @@
 happy-deployer CHANGELOG
 =====================
 
-0.2.01
+0.2.1
 -----
 * Removed CURL.
 

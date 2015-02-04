@@ -76,7 +76,7 @@ class happydev::php {
       'display_errors = On',
       'display_startup_errors = On',
       '',
-      # @see http://www.xdebug.org/docs/all_settings
+      '; @see http://www.xdebug.org/docs/all_settings',
       'xdebug.idekey = "vagrant-debug"',
       'xdebug.remote_enable = 1',
       'xdebug.remote_port = 9000',

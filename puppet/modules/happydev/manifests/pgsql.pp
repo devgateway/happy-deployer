@@ -46,13 +46,13 @@ class happydev::pgsql (
 
   class { '::postgresql::server::contrib': }
 
-  $pgpass_target = '/home/vagrant/.pgpass';
+  # Make sure the PostgreSQL password file for the vagrant user exists.
+  $pgpass_target = '/home/vagrant/.pgpass'
   concat { $pgpass_target:
-    ensure  => present,
-    mode    => '0600',
-    group   => 'vagrant',
-    owner   => 'vagrant',
-    notify => Service['httpd'],
+    ensure => present,
+    mode   => '0600',
+    owner  => 'vagrant',
+    group  => 'vagrant',
   }
 
   # Create the databases.
@@ -84,8 +84,7 @@ class happydev::pgsql (
       password => postgresql_password($dbinfo['user'], $dbinfo['pass']),
     } ->
     # Create password file.
-    concat::fragment { "password_file_for_${dbinfo['name']}_${$dbinfo['user']}":
-      ensure  => present,
+    concat::fragment { "Create password file for ${dbinfo['name']} / ${$dbinfo['user']}":
       target  => $pgpass_target,
       content => inline_template("<%= @pgpass_info.join ':' %>\n"),
     }

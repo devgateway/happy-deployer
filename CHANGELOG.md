@@ -1,6 +1,10 @@
 happy-deployer CHANGELOG
 =====================
 
+0.2.2
+-----
+* Fixed PostgreSQL user password file.
+
 0.2.1
 -----
 * Removed CURL.

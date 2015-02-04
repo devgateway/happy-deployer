@@ -6,8 +6,8 @@
 #
 
 class happydev::pgsql (
-  $root_password = hiera('pgsql_root_password', 'this_is_a_random_password'),
-  $databases = hiera('pgsql_databases', []),
+  $root_password       = hiera('pgsql_root_password', 'this_is_a_random_password'),
+  $databases           = hiera('pgsql_databases', []),
   $allow_remote_access = hiera('pgsql_allow_remote_access', false),
 ) {
 
@@ -46,6 +46,15 @@ class happydev::pgsql (
 
   class { '::postgresql::server::contrib': }
 
+  $pgpass_target = '/home/vagrant/.pgpass';
+  concat { $pgpass_target:
+    ensure  => present,
+    mode    => '0600',
+    group   => 'vagrant',
+    owner   => 'vagrant',
+    notify => Service['httpd'],
+  }
+
   # Create the databases.
   each($databases) |$dbinfo| {
     # Prepare variables for the Password File.
@@ -75,12 +84,10 @@ class happydev::pgsql (
       password => postgresql_password($dbinfo['user'], $dbinfo['pass']),
     } ->
     # Create password file.
-    file { '/home/vagrant/.pgpass':
-      ensure  => file,
-      content => join($pgpass_info, ':'),
-      mode    => '0600',
-      group   => 'vagrant',
-      owner   => 'vagrant',
+    concat::fragment { "password_file_for_${dbinfo['name']}_${$dbinfo['user']}":
+      ensure  => present,
+      target  => $pgpass_target,
+      content => inline_template("<%= @pgpass_info.join ':' %>\n"),
     }
 
     if ($allow_remote_access) {

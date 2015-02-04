@@ -7,7 +7,7 @@
 #
 
 class happydev::rhel (
-  $epel_repo = hiera('happydev::rhel::epel_repo', true),
+  $epel_repo   = hiera('happydev::rhel::epel_repo', true),
   $fast_mirror = hiera('happydev::rhel::fast_mirror', true),
 ) {
 
@@ -15,8 +15,8 @@ class happydev::rhel (
     Exec { path => [ '/bin/', '/sbin/' , '/usr/bin/', '/usr/sbin/' ] }
 
     if ($fast_mirror) {
-      if ($fast_mirror_plugin_status == 'missing') {
-        info('Installing FastestMirror yum plugin, this might take like 4-6 minutes on slow connections.')
+      if ($::fast_mirror_plugin_status == 'missing') {
+        info('Installing FastestMirror yum plugin.')
 
         # Uncomment the mirrorlist for the Scientific Linux base repository!
         # @see http://wiki.centos.org/PackageManagement/Yum/FastestMirror
@@ -38,7 +38,7 @@ class happydev::rhel (
     }
 
     if ($epel_repo) {
-      if ($epel_repo_status != 'enabled') {
+      if ($::epel_repo_status != 'enabled') {
         # A helper repository that helps to install the right EPEL repository.
         # @see http://stackoverflow.com/a/14155303
         yumrepo { 'epel-bootstrap':

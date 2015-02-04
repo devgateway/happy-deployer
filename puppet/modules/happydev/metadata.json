@@ -1,12 +1,12 @@
 {
   "name": "SchnWalter-happydev",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "summary": "Setup a Development Environment",
   "author": "Development Gateway",
   "project_page": "https://github.com/devgateway/happy-deployer",
   "source": "https://github.com/devgateway/happy-deployer/tree/master/puppet/modules/happydev",
   "issues_url": "https://github.com/devgateway/happy-deployer/issues",
-  "license": "MIT License",
+  "license": "MIT",
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",

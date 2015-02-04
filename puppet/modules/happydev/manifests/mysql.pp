@@ -6,7 +6,7 @@
 
 class happydev::mysql (
   $root_password = hiera('mysql_root_password', 'this_is_a_random_password'),
-  $databases = hiera('mysql_databases', []),
+  $databases     = hiera('mysql_databases', []),
 ) {
 
   # Install and configure MySQL.

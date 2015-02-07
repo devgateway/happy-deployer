@@ -1,9 +1,17 @@
-# = Class: jekyll
+# = Class: happydev::jekyll
+#
+# == Requires:
+# * https://forge.puppetlabs.com/jfryman/nginx
+# * https://forge.puppetlabs.com/maestrodev/rvm
 #
 
 class happydev::jekyll (
+  $ruby_version = hiera('ruby_version', 'ruby-2.2'),
+  $shortname = hiera('vm_shortname', ''),
   $vhosts = hiera('vhosts', []),
 ) {
+  # The gemset where to install the project specific gems.
+  $target_gemset = "${ruby_version}@${shortname}"
 
   # Install the nginx web server.
   class { 'nginx': }
@@ -18,23 +26,23 @@ class happydev::jekyll (
   }
 
   # Install ruby.
-  rvm_system_ruby { 'ruby-2.2':
+  rvm_system_ruby { $ruby_version:
     ensure      => 'present',
     default_use => true,
   }
 
   # Create a gemset for the project.
-  rvm_gemset { 'ruby-2.2@dgorg':
+  rvm_gemset { $target_gemset:
     ensure  => 'present',
-    require => Rvm_system_ruby['ruby-2.2'];
+    require => Rvm_system_ruby[$ruby_version];
   }
 
   # Install bundler easily install dependencies.
   rvm_gem { 'bundler':
     name         => 'bundler',
-    ruby_version => 'ruby-2.2@dgorg',
+    ruby_version => $target_gemset,
     ensure       => 'latest',
-    require      => Rvm_gemset['ruby-2.2@dgorg'];
+    require      => Rvm_gemset[$target_gemset];
   }
 
   # Install gem dependencies.
@@ -87,7 +95,7 @@ class happydev::jekyll (
       access_log           => "/var/log/nginx/${vhostinfo['domain']}__access.log",
       error_log            => "/var/log/nginx/${vhostinfo['domain']}__error.log",
       vhost_cfg_append     => {
-        'expires'       => '2h',
+        'expires'       => '0',
         'server_tokens' => 'off',
       },
     }

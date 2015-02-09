@@ -6,7 +6,7 @@ echo 'Configure Hiera...'
 DATA_FOLDER='/var/lib/hiera'
 
 # Setup Hiera.
-# @see http://docs.puppetlabs.com/hiera/1/index.html
+# @see https://docs.puppetlabs.com/hiera/1
 
 # Hiera uses an ordered hierarchy to look up data.
 # @see http://docs.puppetlabs.com/hiera/1/hierarchy.html
@@ -15,15 +15,15 @@ cat << EOF > $HIERA_FILE
 ---
 :backends:
   - yaml
-
+  - json
 :yaml:
   :datadir: $DATA_FOLDER
-
+:json:
+  :datadir: $DATA_FOLDER
 :hierarchy:
-  - %{hostname}
-  - %{environment}
+  - "%{::hostname}"
+  - "%{::environment}"
   - common
-
 EOF
 
 # Create link to common hiera settings.

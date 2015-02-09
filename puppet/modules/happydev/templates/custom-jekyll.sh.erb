@@ -1,0 +1,6 @@
+# /etc/profile.d/custom-jekyll.sh
+
+# Aliases for Jekyll
+
+# force_polling is required in vagrant.
+alias jb='cd <%= @project_docroot %> && rvm ruby-2.2@dgorg do jekyll build --watch --force_polling'

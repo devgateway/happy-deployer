@@ -44,3 +44,9 @@ vagrant destroy
 ```
 vagrant provision
 ```
+
+More Info
+---------
+[Puppet Style Guide](https://docs.puppetlabs.com/guides/style_guide.html)
+[Puppet Function Reference](https://docs.puppetlabs.com/references/latest/function.html)
+[Puppet Type Reference](https://docs.puppetlabs.com/references/latest/type.html)

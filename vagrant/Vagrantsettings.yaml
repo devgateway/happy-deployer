@@ -57,9 +57,9 @@ pgsql_databases:
 
 # Default VM box.
 box:
-  name: precise64
-  url: http://files.vagrantup.com/precise64.box
-  download_checksum: 5803ee2fa7c5ded51a59f7928a2fead0
+  name: scientific6
+  url: http://example.org/files/scientific6.box
+  download_checksum: ffffffffffffffffffffffffffffffff
   download_checksum_type: md5
 
 ########################################

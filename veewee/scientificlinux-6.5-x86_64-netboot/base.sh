@@ -5,7 +5,7 @@
 sed -i "s/^.*requiretty/#Defaults requiretty/" /etc/sudoers
 
 # Do not keep old kernel versions. (RISKY!)
-sed -i "s/^installonly_limit=3/installonly_limit=0/" /etc/yum.conf
+# sed -i "s/^installonly_limit=3/installonly_limit=0/" /etc/yum.conf
 
 # Remove all wireles drivers.
 rpm -qa | grep ^iwl.*-firmware | xargs -i{} yum -y erase {}

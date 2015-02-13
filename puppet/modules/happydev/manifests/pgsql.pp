@@ -49,7 +49,7 @@ class happydev::pgsql (
   # Make sure the PostgreSQL password file for the vagrant user exists.
   $pgpass_target = '/home/vagrant/.pgpass'
   concat { $pgpass_target:
-    ensure => present,
+    ensure => 'present',
     mode   => '0600',
     owner  => 'vagrant',
     group  => 'vagrant',

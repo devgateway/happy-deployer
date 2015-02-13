@@ -30,7 +30,7 @@ class happydev::fairy_dust::orange_blossom (
     $project_docroot = $vhosts['0']['docroot']
     file { '/etc/profile.d/custom.sh':
       ensure  => file,
-      content => template('happydev/bash-custom.sh.erb'),
+      content => template('happydev/custom.sh.erb'),
     }
   }
 }

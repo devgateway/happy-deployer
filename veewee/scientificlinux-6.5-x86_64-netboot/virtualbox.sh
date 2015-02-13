@@ -1,7 +1,13 @@
-# Installing the virtualbox guest additions
+# Install VirtualBox Guest Additions.
+
+# Get the VirtualBox version.
 VBOX_VERSION=$(cat /home/veewee/.vbox_version)
-cd /tmp
-# mount -o loop /home/veewee/VBoxGuestAdditions_$VBOX_VERSION.iso /mnt
-# sh /mnt/VBoxLinuxAdditions.run
-# umount /mnt
+
+# Install VirtualBox Guest Additions.
+mount -o loop /home/veewee/VBoxGuestAdditions_$VBOX_VERSION.iso /mnt
+sh /mnt/VBoxLinuxAdditions.run
+umount /mnt
+
+# Remove the GA ISO file.
 rm -rf /home/veewee/VBoxGuestAdditions_*.iso
+

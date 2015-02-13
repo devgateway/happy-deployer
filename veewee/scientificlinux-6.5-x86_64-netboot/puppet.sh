@@ -1,24 +1,16 @@
-# Install Puppet
+# Install Puppet.
 
-cat > /etc/yum.repos.d/puppetlabs.repo << EOM
-[puppetlabs-dependencies]
-name=puppetlabdsdependencies
-baseurl=http://yum.puppetlabs.com/el/6/dependencies/\$basearch
-enabled=1
-gpgcheck=0
+# Import the Puppet Labs public key.
+wget -O - https://downloads.puppetlabs.com/puppetlabs-gpg-signing-key.pub | gpg --import
 
-[puppetlabs]
-name=puppetlabs
-baseurl=http://yum.puppetlabs.com/el/6/products/\$basearch
-enabled=1
-gpgcheck=0
-EOM
+# Install the repository.
+rpm -Uvh http://yum.puppetlabs.com/puppetlabs-release-el-6.noarch.rpm
 
-# Install puppet and facter.
-yum -y install puppet-3.4.3 facter-1.7.5
+# Wee need to lock puppet dependencies to a particular version,
+# because of some repository issues.
+yum -y install yum-plugin-versionlock
 
+# Install Puppet and dependencies and lock their version.
+yum -y install puppet-3.4.3 facter-1.7.5 hiera-1.3.2
+yum versionlock puppet facter hiera
 
-cat >> /tmp/puppetlabs.repo << EOM
-# Prevent puppet and facter updates.
-exclude=puppet facter
-EOM

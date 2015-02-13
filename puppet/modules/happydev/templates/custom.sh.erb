@@ -1,5 +1,6 @@
 # /etc/profile.d/custom.sh
 
+# Style shell prompt.
 if [ "$PS1" ]; then
   if [[ $EUID -ne 0 ]]; then
     # You are not root, the prompt should be yellow
@@ -11,6 +12,9 @@ if [ "$PS1" ]; then
 fi
 
 # Define custom aliases.
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias grep='grep --color'
 alias ll='ls -lha'
 
 alias cdw='cd /var/www; pwd'

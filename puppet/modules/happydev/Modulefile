@@ -1,5 +1,5 @@
 name 'SchnWalter-happydev'
-version '0.2.3'
+version '0.2.4'
 source 'https://github.com/devgateway/happy-deployer/tree/master/puppet/modules/happydev'
 author 'Development Gateway'
 license 'MIT'
@@ -8,16 +8,20 @@ description 'Quickly creates a basic development environment.'
 project_page 'https://github.com/devgateway/happy-deployer'
 
 
-dependency 'puppetlabs/stdlib', '3.2.x'
+dependency 'puppetlabs/stdlib', '4.5.x'
+dependency 'puppetlabs/concat', '1.1.x'
 
-dependency 'puppetlabs/apache', '1.0.x'
-#dependency 'jfryman/nginx', '0.0.9'
-dependency 'puppetlabs/firewall', '1.0.x'
+dependency 'puppetlabs/apache', '1.2.x'
+dependency 'puppetlabs/firewall', '1.4.x'
 
-dependency 'example42/php', '2.0.x'
+# Lock PHP version untill this commit has been fixed or removed.
+# https://github.com/example42/puppet-php/commit/ee471cd8c23edfdae7fb42e26f93ed5ce0c72d3c
+dependency 'example42/php', '2.0.19'
 dependency 'example42/puppi', '2.1.x'
 
-dependency 'puppetlabs/mysql', '2.2.x'
-dependency 'puppetlabs/postgresql', '3.3.x'
-dependency 'puppetlabs/mongodb', '0.7.x'
-dependency 'puppetlabs/concat', '1.0.x'
+dependency 'puppetlabs/mysql', '2.3.x'
+dependency 'puppetlabs/postgresql', '3.4.x'
+dependency 'puppetlabs/mongodb', '0.10.x'
+
+dependency 'maestrodev/rvm', '1.10.x'
+dependency 'jfryman/nginx', '0.2.x'

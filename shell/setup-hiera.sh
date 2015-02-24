@@ -15,10 +15,7 @@ cat << EOF > $HIERA_FILE
 ---
 :backends:
   - yaml
-  - json
 :yaml:
-  :datadir: $DATA_FOLDER
-:json:
   :datadir: $DATA_FOLDER
 :hierarchy:
   - "%{::hostname}"

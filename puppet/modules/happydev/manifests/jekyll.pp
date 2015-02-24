@@ -57,7 +57,7 @@ class happydev::jekyll (
     provider => 'yum',
   }
 
-  # Required to run 'jekeyll serve'.
+  # Required to run 'jekyll serve'.
   package { 'nodejs':
     ensure   => latest,
     provider => 'yum',
@@ -65,39 +65,62 @@ class happydev::jekyll (
 
   # Setup projects.
   each($vhosts) |$vhostinfo| {
-    exec { "gem update in ${vhostinfo['domain']}":
-      command   => '/usr/local/rvm/bin/rvm ruby-2.2@dgorg do gem update',
-      user      => 'vagrant',
-      cwd       => $vhostinfo['docroot'],
-      logoutput => true,
-      require   => [
-        Package['libicu-devel'],
-        Package['cmake'],
-        Package['nodejs'],
-        Rvm_gem['bundler'],
-      ],
-    } ->
-    exec { "bundle install in ${vhostinfo['domain']}":
-      command   => '/usr/local/rvm/bin/rvm ruby-2.2@dgorg do bundle install',
-      user      => 'vagrant',
-      cwd       => $vhostinfo['docroot'],
-      logoutput => true,
-    }
-
-    # Setup a virtual host for the project.
+    # Configure the nginx vhost base.
     nginx::resource::vhost { $vhostinfo['domain']:
       ensure               => present,
       listen_port          => 80,
       use_default_location => false,
       server_name          => [ $vhostinfo['domain'] ],
-      www_root             => "${vhostinfo['docroot']}/_site",
       index_files          => [ 'index.html' ],
       access_log           => "/var/log/nginx/${vhostinfo['domain']}__access.log",
       error_log            => "/var/log/nginx/${vhostinfo['domain']}__error.log",
-      vhost_cfg_append     => {
-        'expires'       => '0',
-        'server_tokens' => 'off',
-      },
+    }
+
+    case $vhostinfo['template'] {
+
+      'jekyll': {
+        # Prepare the environment.
+        exec { "gem update in ${vhostinfo['domain']}":
+          command   => '/usr/local/rvm/bin/rvm ruby-2.2@dgorg do gem update',
+          user      => 'vagrant',
+          cwd       => $vhostinfo['docroot'],
+          logoutput => true,
+          require   => [
+            Package['libicu-devel'],
+            Package['cmake'],
+            Package['nodejs'],
+            Rvm_gem['bundler'],
+          ],
+        } ->
+        exec { "bundle install in ${vhostinfo['domain']}":
+          command   => '/usr/local/rvm/bin/rvm ruby-2.2@dgorg do bundle install',
+          user      => 'vagrant',
+          cwd       => $vhostinfo['docroot'],
+          logoutput => true,
+        }
+
+        # Configure the jekyll specific vhost.
+        Nginx::Resource::Vhost[$vhostinfo['domain']] {
+          www_root         => "${vhostinfo['docroot']}/${vhostinfo['jekyll_destination']}",
+          vhost_cfg_append => {
+            'expires'       => '0',
+            'server_tokens' => 'off',
+          },
+        }
+      }
+
+      default: {
+        # Configure the default vhost.
+        Nginx::Resource::Vhost[$vhostinfo['domain']] {
+          www_root         => "${vhostinfo['docroot']}",
+          vhost_cfg_append => {
+            'expires'       => '0',
+            'server_tokens' => 'off',
+            'autoindex'     => 'on',
+          },
+        }
+      }
+
     }
   }
 

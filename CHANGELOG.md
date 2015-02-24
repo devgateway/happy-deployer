@@ -1,6 +1,10 @@
 happy-deployer CHANGELOG
 =====================
 
+0.2.5
+-----
+* Updated jekyll manifest to allow for different nginx vhosts.
+
 0.2.4
 -----
 * Updated SL6 veewee template.

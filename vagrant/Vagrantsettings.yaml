@@ -59,7 +59,7 @@ pgsql_databases:
 box:
   name: scientific6
   url: http://example.org/files/scientific6.box
-  download_checksum: ffffffffffffffffffffffffffffffff
+  download_checksum: 00000000000000000000000000000000
   download_checksum_type: md5
 
 ########################################
@@ -85,7 +85,7 @@ puppet_options_dev:
 ####################
 # Puppet settings for non-development mode:
 puppet_module_name: SchnWalter/happydev
-puppet_module_version: 0.2.5
+puppet_module_version: 0.2.6
 
 # HACK-ishly remove existing modules and then reinstall.
 puppet_force_reinstall: 0

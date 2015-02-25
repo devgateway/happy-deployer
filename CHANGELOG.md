@@ -1,6 +1,10 @@
 happy-deployer CHANGELOG
 =====================
 
+0.2.6
+-----
+* Updated ruby gemset for jekyll vhost template.
+
 0.2.5
 -----
 * Updated jekyll manifest to allow for different nginx vhosts.

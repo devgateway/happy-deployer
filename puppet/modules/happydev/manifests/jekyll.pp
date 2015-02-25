@@ -105,6 +105,10 @@ class happydev::jekyll (
           vhost_cfg_append => {
             'expires'       => '0',
             'server_tokens' => 'off',
+
+            # http://httpd.apache.org/docs/2.2/mod/core.html#enablesendfile
+            # https://forums.virtualbox.org/viewtopic.php?f=7&t=56066
+            'sendfile'      => 'off',
           },
         }
       }
@@ -117,6 +121,10 @@ class happydev::jekyll (
             'expires'       => '0',
             'server_tokens' => 'off',
             'autoindex'     => 'on',
+
+            # http://httpd.apache.org/docs/2.2/mod/core.html#enablesendfile
+            # https://forums.virtualbox.org/viewtopic.php?f=7&t=56066
+            'sendfile'      => 'off',
           },
         }
       }

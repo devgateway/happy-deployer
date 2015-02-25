@@ -81,7 +81,7 @@ class happydev::jekyll (
       'jekyll': {
         # Prepare the environment.
         exec { "gem update in ${vhostinfo['domain']}":
-          command   => '/usr/local/rvm/bin/rvm ruby-2.2@dgorg do gem update',
+          command   => "/usr/local/rvm/bin/rvm ${target_gemset} do gem update",
           user      => 'vagrant',
           cwd       => $vhostinfo['docroot'],
           logoutput => true,
@@ -93,7 +93,7 @@ class happydev::jekyll (
           ],
         } ->
         exec { "bundle install in ${vhostinfo['domain']}":
-          command   => '/usr/local/rvm/bin/rvm ruby-2.2@dgorg do bundle install',
+          command   => "/usr/local/rvm/bin/rvm ${target_gemset} do bundle install",
           user      => 'vagrant',
           cwd       => $vhostinfo['docroot'],
           logoutput => true,

@@ -106,7 +106,7 @@ class happydev::jekyll (
             'expires'       => '0',
             'server_tokens' => 'off',
 
-            # http://httpd.apache.org/docs/2.2/mod/core.html#enablesendfile
+            # http://nginx.org/en/docs/http/ngx_http_core_module.html#sendfile
             # https://forums.virtualbox.org/viewtopic.php?f=7&t=56066
             'sendfile'      => 'off',
           },
@@ -122,7 +122,7 @@ class happydev::jekyll (
             'server_tokens' => 'off',
             'autoindex'     => 'on',
 
-            # http://httpd.apache.org/docs/2.2/mod/core.html#enablesendfile
+            # http://nginx.org/en/docs/http/ngx_http_core_module.html#sendfile
             # https://forums.virtualbox.org/viewtopic.php?f=7&t=56066
             'sendfile'      => 'off',
           },

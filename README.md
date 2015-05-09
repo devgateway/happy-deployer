@@ -7,13 +7,14 @@
 * [Vagrant](http://www.vagrantup.com/downloads.html)
 * [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) and a C compiler
 * [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater) (tested on linux and Mac OS)
+* (optional) [vagrant-bash-completion](https://github.com/kura/vagrant-bash-completion)
 
 
 ## Setup Instructions
 
 * Install VirtualBox
 
-* Install Vagrant
+* Install Vagrant, and optionally the bash completion script.
 
 * Make sure you have a C compiler installed, required to compile [Ruby-FFI](https://github.com/ffi/ffi)
   for the 'vagrant-vbguest' plugin.

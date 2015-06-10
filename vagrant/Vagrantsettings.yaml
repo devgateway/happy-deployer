@@ -3,7 +3,7 @@
 ########################################
 # Project specific settings.
 
-# VM specific infromation:
+# VM specific information:
 #  - vm_hostonlyip should be unique among your virtual machines.
 #  - the VM hostname is created using vm_shortname and vm_environment.
 vm_hostonlyip: 10.10.10.10

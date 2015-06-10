@@ -109,7 +109,7 @@ class happydev::php {
 
   # Install Drush.
   exec { 'install-drush':
-    command => 'composer global require drush/drush:6.*',
+    command => 'composer global require drush/drush:7.*',
     require => Exec['install-composer'],
     notify  => Exec['install-drush-dependencies'],
     onlyif  => 'test ! -f /usr/bin/drush', # checks for valid symbolic link.

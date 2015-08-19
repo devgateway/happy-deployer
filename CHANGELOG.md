@@ -1,6 +1,10 @@
 happy-deployer CHANGELOG
 =====================
 
+0.2.7 - 0.2.8
+-----
+* Updated puppet module dependencies.
+
 0.2.6
 -----
 * Updated ruby gemset for jekyll vhost template.

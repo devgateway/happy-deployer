@@ -131,6 +131,16 @@ class happydev::php {
   file { '/etc/profile.d/custom-drush.sh':
     ensure  => file,
     content => "alias d=/usr/local/bin/drush\nalias dr=/usr/local/bin/drush\n",
+  } ->
+  # PATCH: Avoid PHP 5.3.3 bug in Drush 7.x branch.
+  # @see https://github.com/drush-ops/drush/pull/1440
+  file { '/tmp/20150611--drush7--fix_php533_integration.patch':
+    ensure  => file,
+    content => template('happydev/20150611--drush7--fix_php533_integration.patch'),
+  } ->
+  exec { 'patch-drush7':
+    command => 'patch --verbose -p1 /tmp/20150611--drush7--fix_php533_integration.patch',
+    cwd     => "${composer_home}/vendor/drush/drush",
   }
 
   # Create a symbolic link to enable Drush completion.

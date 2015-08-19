@@ -3,7 +3,7 @@
 ########################################
 # Project specific settings.
 
-# VM specific infromation:
+# VM specific information:
 #  - vm_hostonlyip should be unique among your virtual machines.
 #  - the VM hostname is created using vm_shortname and vm_environment.
 vm_hostonlyip: 10.10.10.10
@@ -85,7 +85,7 @@ puppet_options_dev:
 ####################
 # Puppet settings for non-development mode:
 puppet_module_name: SchnWalter/happydev
-puppet_module_version: 0.2.6
+puppet_module_version: 0.2.8
 
 # HACK-ishly remove existing modules and then reinstall.
 puppet_force_reinstall: 0

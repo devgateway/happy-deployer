@@ -1,6 +1,6 @@
 {
   "name": "SchnWalter-happydev",
-  "version": "0.2.6",
+  "version": "0.2.8",
   "summary": "Setup a Development Environment",
   "author": "Development Gateway",
   "project_page": "https://github.com/devgateway/happy-deployer",
@@ -29,19 +29,19 @@
   ],
   "dependencies": [
     {
-      "version_requirement": "4.5.x",
+      "version_requirement": "4.8.x",
       "name": "puppetlabs/stdlib"
     },
     {
-      "version_requirement": "1.1.x",
+      "version_requirement": "1.2.x",
       "name": "puppetlabs/concat"
     },
     {
-      "version_requirement": "1.2.x",
+      "version_requirement": "1.6.x",
       "name": "puppetlabs/apache"
     },
     {
-      "version_requirement": "1.4.x",
+      "version_requirement": "1.7.x",
       "name": "puppetlabs/firewall"
     },
     {
@@ -53,15 +53,15 @@
       "name": "example42/puppi"
     },
     {
-      "version_requirement": "2.3.x",
+      "version_requirement": "3.6.x",
       "name": "puppetlabs/mysql"
     },
     {
-      "version_requirement": "3.4.x",
+      "version_requirement": "4.5.x",
       "name": "puppetlabs/postgresql"
     },
     {
-      "version_requirement": "0.10.x",
+      "version_requirement": "0.11.x",
       "name": "puppetlabs/mongodb"
     },
     {

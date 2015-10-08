@@ -7,7 +7,9 @@
 # == TODO:
 #
 
-class happydev::php {
+class happydev::php (
+  $drush_version = hiera('drush_version', '7.0.0'),
+) {
   Exec { path => [ '/bin/', '/sbin/' , '/usr/bin/', '/usr/sbin/' ] }
 
   # Install and setup PHP v5
@@ -85,6 +87,10 @@ class happydev::php {
   # Install Composer - A dependency manager for PHP
   $composer_home = '/opt/composer'
   Exec { environment => "COMPOSER_HOME=${composer_home}" }
+  file { 'composer':
+    path   => $composer_home,
+    ensure => directory,
+  } ->
   exec { 'install-composer':
     command => 'curl -sS https://getcomposer.org/installer | php',
     cwd     => $composer_home,
@@ -98,34 +104,20 @@ class happydev::php {
     target => "${composer_home}/composer.phar",
   }
 
-  # Helper function.
-  file { '/opt/composer':
-    ensure => directory,
-  }
-
   # Install Drush.
   exec { 'install-drush':
-    command => 'composer global require drush/drush:7.0.0',
+    command => "composer global require drush/drush:${drush_version}",
     require => Exec['install-composer'],
     notify  => File['/usr/local/bin/drush'],
     onlyif  => 'test ! -L /usr/local/bin/drush', # checks for valid symbolic link.
   }
 
-  exec { 'install-drush-dependencies':
-    command     => '/usr/local/bin/drush',
-    refreshonly => true,
-  }
-
-  # Create a symbolic link and aliases for Drush.
+  # Create a symbolic link for Drush.
   file { '/usr/local/bin/drush':
     ensure  => link,
     # drush is the vendor, the application folder name and the executable.
     target  => "${composer_home}/vendor/drush/drush/drush",
     require => Exec['install-drush'],
-  } ->
-  file { '/etc/profile.d/custom-drush.sh':
-    ensure  => file,
-    content => "alias d=/usr/local/bin/drush\nalias dr=/usr/local/bin/drush\n",
   } ->
   # PATCH: Avoid PHP 5.3.3 bug in Drush 7.x branch.
   # @see https://github.com/drush-ops/drush/pull/1440
@@ -136,7 +128,9 @@ class happydev::php {
   exec { 'patch-drush7':
     command => 'patch --verbose -p1 /tmp/20150611--drush7--fix_php533_integration.patch',
     cwd     => "${composer_home}/vendor/drush/drush",
-    notify  => Exec['install-drush-dependencies'],
+  } ->
+  exec { 'install-drush-dependencies':
+    command => '/usr/local/bin/drush',
   }
 
   # Create a symbolic link to enable Drush completion.
@@ -144,5 +138,11 @@ class happydev::php {
     ensure  => link,
     target  => "${composer_home}/vendor/drush/drush/drush.complete.sh",
     require => Exec['install-drush'],
+  }
+
+  # Create Drush aliases.
+  file { '/etc/profile.d/custom-drush.sh':
+    ensure  => file,
+    content => "\nalias d=/usr/local/bin/drush\n",
   }
 }

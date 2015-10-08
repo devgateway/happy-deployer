@@ -78,6 +78,7 @@ class happydev::php {
       '',
       '; @see http://www.xdebug.org/docs/all_settings',
       'xdebug.idekey = "vagrant-debug"',
+      'xdebug.max_nesting_level = 300',
       'xdebug.remote_enable = 1',
       'xdebug.remote_port = 9000',
       'xdebug.remote_connect_back = 1',

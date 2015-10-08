@@ -1,6 +1,10 @@
 happy-deployer CHANGELOG
 =====================
 
+0.2.10
+-----
+* Fixed composer install.
+
 0.2.9
 -----
 * Updated puppet module dependencies.

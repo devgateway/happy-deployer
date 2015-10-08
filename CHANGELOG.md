@@ -1,6 +1,12 @@
 happy-deployer CHANGELOG
 =====================
 
+0.2.9
+-----
+* Updated puppet module dependencies.
+* Locked puppet module versions.
+* Fixed Drush installation on PHP 5.3.3.
+
 0.2.7 - 0.2.8
 -----
 * Updated puppet module dependencies.

@@ -107,6 +107,7 @@ class happydev::php {
   exec { 'install-drush':
     command => 'composer global require drush/drush:7.0.0',
     require => Exec['install-composer'],
+    notify  => File['/usr/local/bin/drush'],
     onlyif  => 'test ! -L /usr/local/bin/drush', # checks for valid symbolic link.
   }
 
@@ -121,7 +122,6 @@ class happydev::php {
     # drush is the vendor, the application folder name and the executable.
     target  => "${composer_home}/vendor/drush/drush/drush",
     require => Exec['install-drush'],
-    notify  => Exec['install-drush-dependencies'],
   } ->
   file { '/etc/profile.d/custom-drush.sh':
     ensure  => file,
@@ -136,6 +136,7 @@ class happydev::php {
   exec { 'patch-drush7':
     command => 'patch --verbose -p1 /tmp/20150611--drush7--fix_php533_integration.patch',
     cwd     => "${composer_home}/vendor/drush/drush",
+    notify  => Exec['install-drush-dependencies'],
   }
 
   # Create a symbolic link to enable Drush completion.

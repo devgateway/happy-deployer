@@ -18,16 +18,12 @@ class happydev::php {
   # Setup PHP with Apache HTTPD if needed.
   if (defined(Class['happydev::apache'])) {
     class { '::apache::mod::php':
-      require => [
-        Package['httpd'],
-        Package['php'],
-      ],
       notify  => Service['httpd'],
     }
 
     # Always proccess after apache and 'request' a httpd restart when finished!
-    Class['php'] -> Class['apache']
-    Class['php'] ~> Class['apache']
+    Class['::php'] -> Class['apache']
+    Class['::php'] ~> Class['apache']
   }
 
   # Setup PHP with Nginx if needed.
@@ -94,8 +90,7 @@ class happydev::php {
     cwd     => $composer_home,
     onlyif  => 'test ! -f /usr/bin/composer', # checks for valid symbolic link.
     require => [
-      Package['php'],
-      File['/opt/composer'],
+      Class['::php'],
     ],
   } ->
   file { '/usr/bin/composer':
@@ -112,14 +107,12 @@ class happydev::php {
   exec { 'install-drush':
     command => 'composer global require drush/drush:7.0.0',
     require => Exec['install-composer'],
-    notify  => Exec['install-drush-dependencies'],
     onlyif  => 'test ! -L /usr/local/bin/drush', # checks for valid symbolic link.
   }
 
   exec { 'install-drush-dependencies':
     command     => '/usr/local/bin/drush',
     refreshonly => true,
-    require => File['/usr/local/bin/drush'],
   }
 
   # Create a symbolic link and aliases for Drush.
@@ -128,6 +121,7 @@ class happydev::php {
     # drush is the vendor, the application folder name and the executable.
     target  => "${composer_home}/vendor/drush/drush/drush",
     require => Exec['install-drush'],
+    notify  => Exec['install-drush-dependencies'],
   } ->
   file { '/etc/profile.d/custom-drush.sh':
     ensure  => file,

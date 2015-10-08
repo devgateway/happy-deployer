@@ -18,16 +18,12 @@ class happydev::php {
   # Setup PHP with Apache HTTPD if needed.
   if (defined(Class['happydev::apache'])) {
     class { '::apache::mod::php':
-      require => [
-        Package['httpd'],
-        Package['php'],
-      ],
       notify  => Service['httpd'],
     }
 
     # Always proccess after apache and 'request' a httpd restart when finished!
-    Class['php'] -> Class['apache']
-    Class['php'] ~> Class['apache']
+    Class['::php'] -> Class['apache']
+    Class['::php'] ~> Class['apache']
   }
 
   # Setup PHP with Nginx if needed.
@@ -78,6 +74,7 @@ class happydev::php {
       '',
       '; @see http://www.xdebug.org/docs/all_settings',
       'xdebug.idekey = "vagrant-debug"',
+      'xdebug.max_nesting_level = 300',
       'xdebug.remote_enable = 1',
       'xdebug.remote_port = 9000',
       'xdebug.remote_connect_back = 1',
@@ -93,8 +90,7 @@ class happydev::php {
     cwd     => $composer_home,
     onlyif  => 'test ! -f /usr/bin/composer', # checks for valid symbolic link.
     require => [
-      Package['php'],
-      File['/opt/composer'],
+      Class['::php'],
     ],
   } ->
   file { '/usr/bin/composer':
@@ -109,18 +105,18 @@ class happydev::php {
 
   # Install Drush.
   exec { 'install-drush':
-    command => 'composer global require drush/drush:7.*',
+    command => 'composer global require drush/drush:7.0.0',
     require => Exec['install-composer'],
-    notify  => Exec['install-drush-dependencies'],
+    notify  => File['/usr/local/bin/drush'],
     onlyif  => 'test ! -L /usr/local/bin/drush', # checks for valid symbolic link.
   }
 
   exec { 'install-drush-dependencies':
-    command     => 'drush',
+    command     => '/usr/local/bin/drush',
     refreshonly => true,
   }
 
-  # Create a simbolic link and aliases for drush.
+  # Create a symbolic link and aliases for Drush.
   file { '/usr/local/bin/drush':
     ensure  => link,
     # drush is the vendor, the application folder name and the executable.
@@ -130,9 +126,20 @@ class happydev::php {
   file { '/etc/profile.d/custom-drush.sh':
     ensure  => file,
     content => "alias d=/usr/local/bin/drush\nalias dr=/usr/local/bin/drush\n",
+  } ->
+  # PATCH: Avoid PHP 5.3.3 bug in Drush 7.x branch.
+  # @see https://github.com/drush-ops/drush/pull/1440
+  file { '/tmp/20150611--drush7--fix_php533_integration.patch':
+    ensure  => file,
+    content => template('happydev/20150611--drush7--fix_php533_integration.patch'),
+  } ->
+  exec { 'patch-drush7':
+    command => 'patch --verbose -p1 /tmp/20150611--drush7--fix_php533_integration.patch',
+    cwd     => "${composer_home}/vendor/drush/drush",
+    notify  => Exec['install-drush-dependencies'],
   }
 
-  # Create a simbolic link to enable drush completion.
+  # Create a symbolic link to enable Drush completion.
   file { '/etc/bash_completion.d/drush.complete.sh':
     ensure  => link,
     target  => "${composer_home}/vendor/drush/drush/drush.complete.sh",

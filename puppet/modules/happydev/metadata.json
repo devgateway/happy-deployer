@@ -1,6 +1,6 @@
 {
   "name": "SchnWalter-happydev",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "summary": "Setup a Development Environment",
   "author": "Development Gateway",
   "project_page": "https://github.com/devgateway/happy-deployer",
@@ -29,19 +29,19 @@
   ],
   "dependencies": [
     {
-      "version_requirement": "4.8.x",
+      "version_requirement": "4.9.0",
       "name": "puppetlabs/stdlib"
     },
     {
-      "version_requirement": "1.2.x",
+      "version_requirement": "1.2.4",
       "name": "puppetlabs/concat"
     },
     {
-      "version_requirement": "1.6.x",
+      "version_requirement": "1.6.0",
       "name": "puppetlabs/apache"
     },
     {
-      "version_requirement": "1.7.x",
+      "version_requirement": "1.7.1",
       "name": "puppetlabs/firewall"
     },
     {
@@ -49,27 +49,27 @@
       "name": "example42/php"
     },
     {
-      "version_requirement": "2.1.x",
+      "version_requirement": "2.1.12",
       "name": "example42/puppi"
     },
     {
-      "version_requirement": "3.6.x",
+      "version_requirement": "3.6.1",
       "name": "puppetlabs/mysql"
     },
     {
-      "version_requirement": "4.5.x",
+      "version_requirement": "4.6.0",
       "name": "puppetlabs/postgresql"
     },
     {
-      "version_requirement": "0.11.x",
+      "version_requirement": "0.11.0",
       "name": "puppetlabs/mongodb"
     },
     {
-      "version_requirement": "1.10.x",
+      "version_requirement": "1.10.2",
       "name": "maestrodev/rvm"
     },
     {
-      "version_requirement": "0.2.x",
+      "version_requirement": "0.2.7",
       "name": "jfryman/nginx"
     }
   ]

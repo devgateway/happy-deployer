@@ -45,7 +45,7 @@
   vagrant halt
   ```
 
-* Delete your VM (yes you will LOOSE all your data that exists only in the VM):
+* Delete your VM (yes you will LOSE all your data that exists only in the VM):
   ```
   vagrant destroy
   ```

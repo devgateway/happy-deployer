@@ -1,5 +1,5 @@
 name 'SchnWalter-happydev'
-version '0.2.8'
+version '0.2.9'
 source 'https://github.com/devgateway/happy-deployer/tree/master/puppet/modules/happydev'
 author 'Development Gateway'
 license 'MIT'
@@ -8,20 +8,18 @@ description 'Quickly creates a basic development environment.'
 project_page 'https://github.com/devgateway/happy-deployer'
 
 
-dependency 'puppetlabs/stdlib', '4.8.x'
-dependency 'puppetlabs/concat', '1.2.x'
+dependency 'puppetlabs/stdlib', '4.9.0'
+dependency 'puppetlabs/concat', '1.2.4'
 
-dependency 'puppetlabs/apache', '1.6.x'
-dependency 'puppetlabs/firewall', '1.7.x'
+dependency 'puppetlabs/apache', '1.6.0'
+dependency 'puppetlabs/firewall', '1.7.1'
 
-# Lock PHP version untill this commit has been fixed or removed.
-# https://github.com/example42/puppet-php/commit/ee471cd8c23edfdae7fb42e26f93ed5ce0c72d3c
 dependency 'example42/php', '2.0.19'
-dependency 'example42/puppi', '2.1.x'
+dependency 'example42/puppi', '2.1.12'
 
-dependency 'puppetlabs/mysql', '3.6.x'
-dependency 'puppetlabs/postgresql', '4.5.x'
-dependency 'puppetlabs/mongodb', '0.11.x'
+dependency 'puppetlabs/mysql', '3.6.1'
+dependency 'puppetlabs/postgresql', '4.6.0'
+dependency 'puppetlabs/mongodb', '0.11.0'
 
-dependency 'maestrodev/rvm', '1.10.x'
-dependency 'jfryman/nginx', '0.2.x'
+dependency 'maestrodev/rvm', '1.10.2'
+dependency 'jfryman/nginx', '0.2.7'

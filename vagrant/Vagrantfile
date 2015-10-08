@@ -142,6 +142,9 @@ Vagrant.configure(2) do |config|
   #   sudo apt-get install -y apache2
   # SHELL
 
+  # Make sure "patch" is installed.
+  config.vm.provision 'shell', inline: "/usr/bin/yum install --quiet --assumeyes patch"
+
   if project_settings['puppet_force_reinstall'] == 1
     # Remove installed puppet modules.
     if project_settings['puppet_development'] == 0

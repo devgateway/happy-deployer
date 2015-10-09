@@ -1,5 +1,9 @@
 happy-deployer CHANGELOG
-=====================
+========================
+
+0.2.11
+-----
+* Revert Drush to version 6.6.0.
 
 0.2.10
 -----
@@ -9,7 +13,7 @@ happy-deployer CHANGELOG
 -----
 * Updated puppet module dependencies.
 * Locked puppet module versions.
-* Fixed Drush installation on PHP 5.3.3.
+* Fixed Drush7 installation on PHP 5.3.3.
 
 0.2.7 - 0.2.8
 -----

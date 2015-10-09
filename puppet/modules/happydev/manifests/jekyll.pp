@@ -39,9 +39,9 @@ class happydev::jekyll (
 
   # Install bundler easily install dependencies.
   rvm_gem { 'bundler':
+    ensure       => 'latest',
     name         => 'bundler',
     ruby_version => $target_gemset,
-    ensure       => 'latest',
     require      => Rvm_gemset[$target_gemset];
   }
 

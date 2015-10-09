@@ -8,7 +8,7 @@
 #
 
 class happydev::php (
-  $drush_version = hiera('drush_version', '7.0.0'),
+  $drush_version = hiera('drush_version', '6.6.0'),
 ) {
   Exec { path => [ '/bin/', '/sbin/' , '/usr/bin/', '/usr/sbin/' ] }
 
@@ -20,7 +20,7 @@ class happydev::php (
   # Setup PHP with Apache HTTPD if needed.
   if (defined(Class['happydev::apache'])) {
     class { '::apache::mod::php':
-      notify  => Service['httpd'],
+      notify => Service['httpd'],
     }
 
     # Always proccess after apache and 'request' a httpd restart when finished!
@@ -88,8 +88,8 @@ class happydev::php (
   $composer_home = '/opt/composer'
   Exec { environment => "COMPOSER_HOME=${composer_home}" }
   file { 'composer':
-    path   => $composer_home,
     ensure => directory,
+    path   => $composer_home,
   } ->
   exec { 'install-composer':
     command => 'curl -sS https://getcomposer.org/installer | php',
@@ -118,16 +118,6 @@ class happydev::php (
     # drush is the vendor, the application folder name and the executable.
     target  => "${composer_home}/vendor/drush/drush/drush",
     require => Exec['install-drush'],
-  } ->
-  # PATCH: Avoid PHP 5.3.3 bug in Drush 7.x branch.
-  # @see https://github.com/drush-ops/drush/pull/1440
-  file { '/tmp/20150611--drush7--fix_php533_integration.patch':
-    ensure  => file,
-    content => template('happydev/20150611--drush7--fix_php533_integration.patch'),
-  } ->
-  exec { 'patch-drush7':
-    command => 'patch --verbose -p1 /tmp/20150611--drush7--fix_php533_integration.patch',
-    cwd     => "${composer_home}/vendor/drush/drush",
   } ->
   exec { 'install-drush-dependencies':
     command => '/usr/local/bin/drush',

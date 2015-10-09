@@ -18,8 +18,8 @@ class happydev::nginx_php (
 
   # Setup iptables to allow access to the HTTP server.
   # firewall { '100 allow HTTP and HTTPS access':
-  #   port => [80, 443],
-  #   proto => tcp,
+  #   port   => [80, 443],
+  #   proto  => tcp,
   #   action => accept,
   # }
 
@@ -27,7 +27,7 @@ class happydev::nginx_php (
   # file { "${docroot}/test.html":
   #   ensure  => file,
   #   content => 'The webserver works just fine!!!',
-  #   group => 'vagrant',
-  #   owner => 'vagrant',
+  #   group   => 'vagrant',
+  #   owner   => 'vagrant',
   # }
 }

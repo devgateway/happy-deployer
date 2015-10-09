@@ -12,7 +12,6 @@ class happydev::mysql (
   # Install and configure MySQL.
   class { '::mysql::server':
     root_password    => $root_password,
-
     override_options => {
       'mysqld'    => {
         'max_allowed_packet' => '256M',

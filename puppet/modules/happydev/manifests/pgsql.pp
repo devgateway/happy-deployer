@@ -31,7 +31,6 @@ class happydev::pgsql (
   class { 'postgresql::globals':
     manage_package_repo => true,
     version             => '9.2',
-    # pg_hba_conf_defaults => false,
   } ->
   class { '::postgresql::server':
     postgres_password => $root_password,
@@ -80,7 +79,7 @@ class happydev::pgsql (
     ]
 
     postgresql::server::db { $dbinfo['name']:
-      user => $dbinfo['user'],
+      user     => $dbinfo['user'],
       password => postgresql_password($dbinfo['user'], $dbinfo['pass']),
     } ->
     # Create password file.

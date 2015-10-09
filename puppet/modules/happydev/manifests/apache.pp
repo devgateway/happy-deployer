@@ -56,7 +56,6 @@ class happydev::apache (
       ensure => directory,
       group  => 'vagrant',
       owner  => 'vagrant',
-      # recurse => true,
     }
   }
 

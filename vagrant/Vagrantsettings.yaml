@@ -1,4 +1,7 @@
-# This is a sample settings file. Copy it into your project root.
+# Default vagrant settings file.
+#
+# You can copy this file to "Vagrantsettings.local.yaml" and configure it.
+#
 
 ########################################
 # Project specific settings.
@@ -57,55 +60,12 @@ pgsql_databases:
 
 # Default VM box.
 box:
-  name: scientific6
-  url: http://example.org/files/scientific6.box
+  name: scientific7
+  url: http://example.org/files/scientific7.box
   download_checksum: 00000000000000000000000000000000
   download_checksum_type: md5
 
 ########################################
-# Puppet settings.
-
-# Enable puppet development "mode".
-puppet_development: 0
-
-# Default options for the "puppet apply"
-# NOTE: "--parser future" is required!
-puppet_options:
-  --parser future
-  --verbose
-  --debug
-
-# Development options for the "puppet apply"
-# NOTE: "--parser future" is required!
-puppet_options_dev:
-  --parser future
-  --verbose
-  --debug
-
-####################
-# Puppet settings for non-development mode:
-puppet_module_name: SchnWalter/happydev
-puppet_module_version: 0.2.11
-
-# HACK-ishly remove existing modules and then reinstall.
-puppet_force_reinstall: 0
-
-puppet_manifest_file_contents: |
-  node default {
-    include ::happydev::rhel
-    include ::happydev::fairy_dust::orange_blossom
-    include ::happydev::mysql
-    include ::happydev::apache
-    include ::happydev::php
-  }
-
-####################
-# Puppet settings for development mode:
-
 # Relative or absolute path pointing to the local development happy-deployer files.
 # NOTE: Do NOT add a trailing slash (/).
 happy_deployer_path: ../happy-deployer
-
-# Alternative (development) manifest file, located in the puppet/manifests folder inside happy-deployer:
-# Replaces puppet_manifest_file_contents only when in puppet development "mode".
-puppet_alternative_manifest_file: default.pp

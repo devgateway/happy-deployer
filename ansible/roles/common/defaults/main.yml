@@ -11,3 +11,10 @@ common__ius_repo_gpg_key_url: /etc/pki/rpm-gpg/IUS-COMMUNITY-GPG-KEY
 # Extra open TCP ports.
 common__extra_open_tcp_ports:
   - 22
+
+# common__developers:
+#   - name: example
+#     comment: Example User
+#     key: https://example.org/~example/authorized_keys.txt
+#     group: developers
+#     groups: wheel

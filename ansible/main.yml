@@ -1,0 +1,9 @@
+---
+- name: Configure LAMP
+  hosts: all
+  become: true
+  become_user: root
+
+  tasks:
+    - hostname: name={{ hostname }}
+      when: hostname is defined

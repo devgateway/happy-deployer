@@ -18,3 +18,7 @@ common__extra_open_tcp_ports:
 #     key: https://example.org/~example/authorized_keys.txt
 #     group: developers
 #     groups: wheel
+
+# Set the backups directory owner and group.
+common__backups_user: deployer
+common__backups_group: developers

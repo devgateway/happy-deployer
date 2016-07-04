@@ -7,3 +7,6 @@
   tasks:
     - hostname: name={{ hostname }}
       when: hostname is defined
+
+  roles:
+    - common

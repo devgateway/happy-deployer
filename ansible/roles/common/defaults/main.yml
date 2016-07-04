@@ -1,0 +1,9 @@
+---
+
+# Information about: Extra Packages for Enterprise Linux (EPEL) repository
+common__epel_repo_url: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+common__epel_repo_gpg_key_url: /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+
+# Information about: Inline with Upstream Stable (IUS) repository
+common__ius_repo_url: https://centos7.iuscommunity.org/ius-release.rpm
+common__ius_repo_gpg_key_url: /etc/pki/rpm-gpg/IUS-COMMUNITY-GPG-KEY

@@ -1,0 +1,10 @@
+---
+
+# - name: Display all variables/facts known for a host
+#   debug: var=hostvars[inventory_hostname] verbosity=4
+
+# - debug: var=common__epel_repo_url
+# - debug: var=vagrant_volumes
+
+- name: Ensure repositories are installed
+  include: repos.yml

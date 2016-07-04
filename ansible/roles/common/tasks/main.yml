@@ -26,3 +26,29 @@
 
 - name: Create Directory for backup archives
   file: path=/var/backups/archive owner={{ common__backups_user }} group={{ common__backups_group }} state=directory mode=0775
+
+- name: Install Packages
+  yum: name={{ item }} state=installed
+  with_items:
+    - bash-completion
+    - deltarpm
+    - git
+    - htop
+    - iftop
+    - iotop
+    - lsof
+    - nmap-ncat
+    - patch
+    - screen
+
+- name: Install yum-cron.
+  yum: name=yum-cron state=present
+
+- name: Enable and start yum-cron
+  service: name=yum-cron state=started enabled=yes
+
+- name: Configure autoupdates.
+  lineinfile:
+    dest: "/etc/yum/yum-cron.conf"
+    regexp: '^apply_updates = .+'
+    line: 'apply_updates = yes'

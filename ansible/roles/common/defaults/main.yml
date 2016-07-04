@@ -7,3 +7,7 @@ common__epel_repo_gpg_key_url: /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
 # Information about: Inline with Upstream Stable (IUS) repository
 common__ius_repo_url: https://centos7.iuscommunity.org/ius-release.rpm
 common__ius_repo_gpg_key_url: /etc/pki/rpm-gpg/IUS-COMMUNITY-GPG-KEY
+
+# Extra open TCP ports.
+common__extra_open_tcp_ports:
+  - 22

@@ -40,8 +40,9 @@ solr__cores:
   - name: project_local
 
 # Extra open TCP ports.
-extra_open_tcp_ports:
+common__extra_open_tcp_ports:
   - 22
+  - 3306
 
 # Ansible variables to override.
 #httpd_php56__memory_limit: 512M

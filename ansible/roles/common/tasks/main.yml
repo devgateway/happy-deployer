@@ -8,3 +8,6 @@
 
 - name: Ensure repositories are installed
   include: repos.yml
+
+- name: Configure firewall
+  include: firewall.yml

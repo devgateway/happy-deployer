@@ -1,0 +1,41 @@
+---
+
+# - name: Display all variables/facts known for a host
+#   debug: var=hostvars[inventory_hostname] verbosity=4
+
+# - debug: var=mariadb__port
+# - debug: var=mariadb__max_allowed_packet
+
+- name: Install MariaDB
+  yum: name=mariadb-server state=installed
+
+- name: Insert Firewall Rule
+  firewalld: port={{ mariadb__port }}/tcp permanent=true state=enabled immediate=yes
+
+# - name: configure selinux to start mysql on any port
+#   seboolean: name=mysql_connect_any state=true persistent=yes
+
+- name: Update MariaDB configuration
+  template: src=custom.cnf.j2 dest=/etc/my.cnf.d/custom.cnf
+  notify:
+  - restart mariadb
+
+# Requried for `mysql_user`
+- name: Install Python MySQL bindings
+  yum: name=MySQL-python state=installed
+
+- name: Start MariaDB
+  service: name=mariadb state=started enabled=yes
+
+- name: Secure the installation
+  include: mysql_secure_installation.yml
+
+- name: Create databases
+  mysql_db: name={{ item.name }} state=present
+  with_items:
+    - "{{ mariadb__databases }}"
+
+- name: Create database users
+  mysql_user: name={{ item.user }} password={{ item.pass }} priv="{{ item.name }}.*:ALL" state=present
+  with_items:
+    - "{{ mariadb__databases }}"

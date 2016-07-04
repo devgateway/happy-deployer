@@ -1,0 +1,15 @@
+## MariaDB configuration.
+## Copy this file to: /etc/my.cnf.d/custom.cnf
+
+[mysqld]
+# Set port number to use when listening for TCP/IP connections.
+# @see: https://dev.mysql.com/doc/refman/5.5/en/server-options.html#option_mysqld_port
+port={{ mariadb__port }}
+
+# Set the maximum size of one packet or any generated/intermediate string.
+# @see: https://dev.mysql.com/doc/refman/5.5/en/server-system-variables.html#sysvar_max_allowed_packet
+max_allowed_packet={{ mariadb__max_allowed_packet }}
+
+# Disabling symbolic-links is recommended to prevent assorted security risks
+# @see: https://dev.mysql.com/doc/refman/5.5/en/server-options.html#option_mysqld_symbolic-links
+symbolic-links=0

@@ -5,6 +5,6 @@
 
 - name: Extra open TCP ports
   firewalld: port={{ item }}/tcp permanent=true state=enabled immediate=yes
-  with_items: "{{ common__extra_open_tcp_ports }}"
+  with_items: "{{ common__extra_open_tcp_ports|default([]) }}"
   notify:
     - restart firewalld

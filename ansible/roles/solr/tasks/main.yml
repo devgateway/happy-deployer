@@ -28,7 +28,7 @@
     owner: solr
     group: solr
     mode: "u=rwx,g=rwx,o=rx"
-  with_items: "{{ solr__cores }}"
+  with_items: "{{ solr__cores|default([]) }}"
 
 - name: Create properties files for all cores.
   template:
@@ -38,7 +38,7 @@
     owner: solr
     group: solr
     mode: "u=rw,g=rw,o=r"
-  with_items: "{{ solr__cores }}"
+  with_items: "{{ solr__cores|default([]) }}"
 
 - name: Create settings files for all cores.
   copy:
@@ -49,6 +49,6 @@
     group: solr
     mode: "u=rw,g=rw,o=r"
     directory_mode: "u=rwx,g=rwx,o=rx"
-  with_items: "{{ solr__cores }}"
+  with_items: "{{ solr__cores|default([]) }}"
   notify:
     - restart solr

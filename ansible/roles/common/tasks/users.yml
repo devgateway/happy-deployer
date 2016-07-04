@@ -18,13 +18,13 @@
     comment: "{{ item.comment|default(omit) }}"
     group: "{{ item.group|default('developers') }}"
     groups: "{{ item.groups|default(omit) }}"
-  with_items: "{{ common__developers }}"
+  with_items: "{{ common__developers|default([]) }}"
 
 - name: Add authorized SSH keys for accounts
   authorized_key:
     user: "{{ item.name }}"
     key: "{{ item.key }}"
-  with_items: "{{ common__developers }}"
+  with_items: "{{ common__developers|default([]) }}"
 
 - name: Configure the new user files umask.
   copy: src=profile_umask.sh dest=/etc/profile.d/custom-umask.sh

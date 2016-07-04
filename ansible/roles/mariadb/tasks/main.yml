@@ -32,10 +32,8 @@
 
 - name: Create databases
   mysql_db: name={{ item.name }} state=present
-  with_items:
-    - "{{ mariadb__databases }}"
+  with_items: "{{ mariadb__databases|default([]) }}"
 
 - name: Create database users
   mysql_user: name={{ item.user }} password={{ item.pass }} priv="{{ item.name }}.*:ALL" state=present
-  with_items:
-    - "{{ mariadb__databases }}"
+  with_items: "{{ mariadb__databases|default([]) }}"

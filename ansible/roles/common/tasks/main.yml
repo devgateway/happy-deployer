@@ -11,3 +11,9 @@
 
 - name: Configure firewall
   include: firewall.yml
+
+- name: Configure users
+  include: users.yml
+
+- name: Configure Bash
+  template: src=profile.custom.sh.j2 dest=/etc/profile.d/custom.sh

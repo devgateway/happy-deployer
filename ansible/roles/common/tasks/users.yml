@@ -1,0 +1,16 @@
+---
+
+- name: Create developers group
+  group: name=developers
+
+- name: Create deployer user
+  user:
+    name: deployer
+    comment: 'Deployer'
+    group: developers
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_comment: '<deployer@$HOSTNAME>'
+
+- name: Configure the new user files umask.
+  copy: src=profile_umask.sh dest=/etc/profile.d/custom-umask.sh

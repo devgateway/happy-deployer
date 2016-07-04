@@ -4,7 +4,7 @@
 # Set the server name.
 ServerName {{ httpd__ServerName }}
 
-{% if vagrant %}
+{% if vagrant is defined %}
 # Do not use the kernel sendfile support to deliver files inside vhosts.
 # https://httpd.apache.org/docs/2.2/mod/core.html#enablesendfile
 # https://forums.virtualbox.org/viewtopic.php?f=7&t=56066

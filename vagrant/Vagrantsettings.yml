@@ -1,7 +1,7 @@
 ---
 # Default vagrant settings file.
 #
-# You can copy this file to "Vagrantsettings.local.yaml" and configure it.
+# You can copy this file to "Vagrantsettings.local.yml" and configure it.
 #
 
 ########################################

@@ -8,12 +8,12 @@
 # Load some project specific settings form YAML files.
 require 'fileutils'
 require 'yaml'
-if File.exists? __dir__ + '/Vagrantsettings.local.yaml'
-  project_settings_file = __dir__ + '/Vagrantsettings.local.yaml'
-elsif File.exists? __dir__ + '/Vagrantsettings.yaml'
-  project_settings_file = __dir__ + '/Vagrantsettings.yaml'
+if File.exists? __dir__ + '/Vagrantsettings.local.yml'
+  project_settings_file = __dir__ + '/Vagrantsettings.local.yml'
+elsif File.exists? __dir__ + '/Vagrantsettings.yml'
+  project_settings_file = __dir__ + '/Vagrantsettings.yml'
 else
-  raise 'Can not find the Vagrantsettings.yaml file.'
+  raise 'Can not find the Vagrantsettings.yml file.'
 end
 project_settings = YAML.load_file(project_settings_file)
 

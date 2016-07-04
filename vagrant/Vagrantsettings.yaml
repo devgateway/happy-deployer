@@ -1,3 +1,4 @@
+---
 # Default vagrant settings file.
 #
 # You can copy this file to "Vagrantsettings.local.yaml" and configure it.
@@ -6,66 +7,103 @@
 ########################################
 # Project specific settings.
 
-# VM specific information:
-#  - vm_hostonlyip should be unique among your virtual machines.
-#  - the VM hostname is created using vm_shortname and vm_environment.
-vm_hostonlyip: 10.10.10.10
-vm_shortname: the-project
-vm_environment: local
+project_shortname: the-project
+project_environment: local
 
 # Vhosts and shared folders:
-#  - template is the name of the template used to create the vhost.
-#  - source points to a folder on the host OS, it can be a relative path.
-#  - docroot points to a folder in the gues where source is mounted.
+#  - domain: the vhost domain.
+#  - aliases: an array of URL aliases for the vhost.
+#  - template: name of the template used to create the vhost.
+#  - noindex: ads a /robots.txt instructing robots to not index the vhost.
+#  - php_devel: ad some PHP devel specific settings to the vhost.
+#  - php_xdebug: load the PHP xdebug extension.
+#  - docroot: directory in the guest OS for the vhost docroot.
+#  - weight: the priority of the vhost.
 vhosts:
   - domain: the-project.dev
     aliases:
       - www.the-project.dev
     template: default
-    source: ./
-    docroot: /var/www/the-project
+    noindex: true
+    php_devel: true
+    php_xdebug: true
+    docroot: /var/www/the-project/web
+    weight: 10
   - domain: another-project.dev
     aliases:
       - www.another-project.dev
-    template: alternative
-    source: ../another-project
-    docroot: /var/www/another-project
+    template: default
+    docroot: /var/wwwanother-project/web
+    weight: 20
+
+solr__cores:
+  - name: project_local
+
+# Extra open TCP ports.
+extra_open_tcp_ports:
+  - 22
+
+# Ansible variables to override.
+#httpd_php56__memory_limit: 512M
+#httpd_php56__date_timezone: 'Europe/Bucharest'
+#httpd_php56__error_reporting: E_ALL
+#httpd_php56__display_errors: On
+#httpd_php56__display_startup_errors: On
+#httpd_php56__opcache_revalidate_freq: 1
+#solr__solr_download_url: file:///vagrant/solr-5.5.2.tgz
 
 ####################
 # Database specific settings.
 
-# mysql_root_password: 'this_is_a_random_password'
-# mysql_databases:
-#   - name: main_database
-#     user: main_user
-#     pass: 'this_is_a_random_generated_password!'
-
-pgsql_allow_remote_access: false
-pgsql_root_password: 'this_is_a_random_password'
-pgsql_databases:
+mariadb__root_password: 'this_is_a_random_password'
+mariadb__databases:
   - name: main_database
     user: main_user
     pass: 'this_is_a_random_generated_password!'
-  - name: seccond_database
-    user: seccond_user
-    pass: 'this_is_another_random_generated_password!'
 
-# mongo_databases:
+# pgsql__allow_remote_access: false
+# pgsql__root_password: 'this_is_a_random_password'
+# pgsql__databases:
+#   - name: main_database
+#     user: main_user
+#     pass: 'this_is_a_random_generated_password!'
+#   - name: seccond_database
+#     user: seccond_user
+#     pass: 'this_is_another_random_generated_password!'
+
+# mongodb__databases:
 #   - name: main_database
 #     user: main_user
 #     pass: 'this_is_a_random_generated_password!'
 
+
 ########################################
 # Vagrant settings.
+# NOTE: Delete section when provisioning outside Vagrant!
 
-# Default VM box.
-box:
+# Vagrant VM only settings.
+#  - vm.hostonlyip should be unique among your virtual machines.
+#  - the VM hostname is created using vm.shortname and vm.environment.
+vagrant:
+  hostonlyip: 10.10.10.10
+  hosts_entry: 0
+
+# Define mount points for the VM.
+vagrant_volumes:
+  - source: ./
+    target: /var/www/the-project-local
+
+# Information about the box.
+vagrant_box:
   name: scientific7
-  url: http://example.org/files/scientific7.box
+  url: https://example.org/files/scientific7.box
   download_checksum: 00000000000000000000000000000000
   download_checksum_type: md5
 
-########################################
-# Relative or absolute path pointing to the local development happy-deployer files.
-# NOTE: Do NOT add a trailing slash (/).
-happy_deployer_path: ../happy-deployer
+# Ansible variables to override.
+common__backups_user: vagrant
+common__backups_group: vagrant
+httpd__User: vagrant
+httpd__Group: vagrant
+httpd__User_vhosts: vagrant
+httpd__Group_vhosts: vagrant

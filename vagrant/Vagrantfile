@@ -71,7 +71,9 @@ Vagrant.configure(2) do |config|
     main_config.hostsupdater.aliases = []
     for vhost in project_settings['vhosts']
       main_config.hostsupdater.aliases = main_config.hostsupdater.aliases + [vhost['domain']]
-      main_config.hostsupdater.aliases = main_config.hostsupdater.aliases + vhost['aliases']
+      if vhost.has_key? 'aliases'
+        main_config.hostsupdater.aliases = main_config.hostsupdater.aliases + vhost['aliases']
+      end
     end
     # Cleanup /etc/hosts when shutting down the VM.
     main_config.hostsupdater.remove_on_suspend = true

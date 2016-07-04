@@ -1,0 +1,21 @@
+---
+
+# TODO: Improve!
+
+- name: Download Solr
+  get_url: url={{ solr__solr_download_url }} dest=/opt sha256sum={{ solr__solr_download_checksum }}
+  register: solr_archive
+
+- name: Extract archive
+  unarchive: src={{ solr_archive.dest }} dest=/opt copy=no
+
+- name: Run the install script
+  command: "/opt/solr-5.5.2/bin/install_solr_service.sh /opt/solr-5.5.2.tgz -p {{ solr__port }} -f"
+  args:
+    creates: /etc/init.d/solr
+
+- name: Solr was started using init script, stopping it.
+  command: service solr stop
+
+- name: Start solr using systemd
+  service: name=solr state=started enabled=yes

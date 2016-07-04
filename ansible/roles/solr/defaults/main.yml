@@ -1,0 +1,9 @@
+---
+
+# Apache Solr port.
+# NOTE: The default is: 8983
+solr__port: 8983
+
+# The download URL and the sha256 checksum.
+solr__solr_download_url: https://archive.apache.org/dist/lucene/solr/5.5.2/solr-5.5.2.tgz
+solr__solr_download_checksum: e62bab565675e10d27f40d5bb090b4181b2f0c21870adf98d1ea873ead7758e1

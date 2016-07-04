@@ -1,0 +1,54 @@
+---
+
+# @TODO: Improve!
+
+# - name: Display all variables/facts known for a host
+#   debug: var=hostvars[inventory_hostname] verbosity=4
+
+# - debug: var=solr__port
+
+- name: Install JAVA OpenJDK Runtime Environment
+  yum: name=java-1.8.0-openjdk-headless state=installed
+
+- name: Check solr presence
+  stat: path=/opt/solr-5.5.2/bin/solr
+  register: solr_executable
+
+- name: Download and install Solr
+  include: install.yml
+  when: not solr_executable.stat.exists
+
+- name: Insert Firewall Rule
+  firewalld: port={{ solr__port }}/tcp permanent=true state=enabled immediate=yes
+
+- name: Create directory for all cores
+  file:
+    path: "/var/solr/data/{{ item.name }}"
+    state: directory
+    owner: solr
+    group: solr
+    mode: "u=rwx,g=rwx,o=rx"
+  with_items: "{{ solr__cores }}"
+
+- name: Create properties files for all cores.
+  template:
+    src: "core.properties.j2"
+    dest: "/var/solr/data/{{ item.name }}/core.properties"
+    backup: no
+    owner: solr
+    group: solr
+    mode: "u=rw,g=rw,o=r"
+  with_items: "{{ solr__cores }}"
+
+- name: Create settings files for all cores.
+  copy:
+    src: "conf-5.x/"
+    dest: "/var/solr/data/{{ item.name }}/conf/"
+    backup: no
+    owner: solr
+    group: solr
+    mode: "u=rw,g=rw,o=r"
+    directory_mode: "u=rwx,g=rwx,o=rx"
+  with_items: "{{ solr__cores }}"
+  notify:
+    - restart solr

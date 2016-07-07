@@ -1,0 +1,13 @@
+---
+
+# Set the root user password.
+mariadb__root_password: 'demo3'
+
+# Bind MariaDB to a specific port.
+# NOTE: The default is: 3306
+# @see: https://dev.mysql.com/doc/refman/5.5/en/server-options.html#option_mysqld_port
+mariadb__port: 3306
+
+# Allow mariadb to handle larger files.
+# @see: https://dev.mysql.com/doc/refman/5.5/en/server-system-variables.html#sysvar_max_allowed_packet
+mariadb__max_allowed_packet: 256M

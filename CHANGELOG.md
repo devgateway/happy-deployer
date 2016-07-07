@@ -1,12 +1,29 @@
 happy-deployer CHANGELOG
 ========================
 
-0.2.11
+0.3.0
 -----
+* Updated to Scientific Linux 7
+* Remove Puppet provisioning in favor of Ansible.
+* PostgreSQL, MongoDB and Jekyll provisioning has not been implemented in Ansible.
+* Added Inline with Upstream Stable (IUS) repository.
+* Added logrotate configuration for HTTPD.
+* Configured Umask for properly configuring files managed by the web server and developers.
+* Updated Drush to v8.
+* Updated PHP to v5.6.
+* Installed Composer PHP package manager.
+* Added Solr and Memcached playbooks. 
+* Controlling firewall and listening ports for Apache HTTPD, MariaDB (MySQL), Memcached and Solr.
+* Added the possibility to create users. 
+* Installed yum-cron in order to automatically install updates.
+* And more...
+
+0.2.11
+------
 * Revert Drush to version 6.6.0.
 
 0.2.10
------
+------
 * Fixed composer install.
 
 0.2.9
@@ -29,7 +46,7 @@ happy-deployer CHANGELOG
 
 0.2.4
 -----
-* Updated SL6 veewee template.
+* Updated SL6 Veewee template.
 * Updated and fixed manifests.
 * Add new puppet recipe for installing jekyll.
 
@@ -43,7 +60,7 @@ happy-deployer CHANGELOG
 
 0.2.0
 -----
-* Reverted puppet module metadata format, Puppet v3.6.0 is not aviablable in the RHEL repo.
+* Reverted puppet module metadata format, Puppet v3.6.0 is not available in the RHEL repo.
 
 0.1.9
 -----
@@ -64,12 +81,12 @@ happy-deployer CHANGELOG
 
 0.1.6
 -----
-* Finetuned version numbers for dependencies.
+* Fine-tuned version numbers for dependencies.
 
 0.1.5
 -----
 * Added MongoDB support.
-* Reduceed complexity of the example Vagrantfile and Vagrantsettings.yaml.
+* Reduced complexity of the example Vagrantfile and Vagrantsettings.yaml.
 * Added support for multiple projects in the same VM.
 * Added custom [veewee](https://github.com/jedi4ever/veewee) template for Scientific Linux 64-bit v5.5.
 

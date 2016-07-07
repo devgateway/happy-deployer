@@ -24,9 +24,19 @@ end
 # abort(project_settings.inspect) # print variables and exit
 
 # Prepare a list of variables for Ansible.
-ansible_extra_vars = {}
+if File.exists? __dir__ + '/ansible/vars.local.yml'
+  ansible_extra_vars_file = __dir__ + '/ansible/vars.local.yml'
+elsif File.exists? __dir__ + '/ansible/vars.default.yml'
+  ansible_extra_vars_file = __dir__ + '/ansible/vars.default.yml'
+else
+  raise 'Can not find the ansible/vars.local.yml file.'
+end
+ansible_extra_vars = YAML.load_file(ansible_extra_vars_file)
 project_settings.each_key {|key| ansible_extra_vars[key] = project_settings[key] }
 
+# Force Ansible to run on the current host.
+# TODO: Use custom inventory for Vagrant.
+ansible_extra_vars['hosts'] = 'all'
 
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version.
@@ -69,7 +79,7 @@ Vagrant.configure(2) do |config|
     # Settings for the vagrant-hostsupdater plugin.
     # @see https://github.com/cogitatio/vagrant-hostsupdater
     main_config.hostsupdater.aliases = []
-    for vhost in project_settings['vhosts']
+    for vhost in ansible_extra_vars['vhosts']
       main_config.hostsupdater.aliases = main_config.hostsupdater.aliases + [vhost['domain']]
       if vhost.has_key? 'aliases'
         main_config.hostsupdater.aliases = main_config.hostsupdater.aliases + vhost['aliases']
@@ -148,8 +158,8 @@ Vagrant.configure(2) do |config|
       test -f /etc/yum.repos.d/epel.repo || \
         (
           echo "Adding the EPEL repository..."\
-          rpm --quiet --force -Uh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
-          gpg --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7 \
+          rpm --quiet --force -Uh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm &> /dev/null && \
+          gpg --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7 &> /dev/null \
         )
 
       echo "Installing Ansible from EPEL..."
@@ -157,7 +167,7 @@ Vagrant.configure(2) do |config|
 
       # Update Ansible configuration.
       sudo /usr/bin/mkdir -p /etc/ansible
-      sudo /usr/bin/cp /vagrant/ansible/hosts /etc/ansible/
+      sudo /usr/bin/cp /vagrant/ansible/inventory.vagrant.conf /etc/ansible/hosts
     SHELL
 
     # Run Ansible from the Vagrant VM
@@ -165,7 +175,7 @@ Vagrant.configure(2) do |config|
     #   $ cd /vagrant/ansible && make run
     main_config.vm.provision 'ansible_local' do |ansible|
       ansible.extra_vars = ansible_extra_vars
-      ansible.playbook = 'ansible/main.yml'  # A relative path on the /vagrant guest directory.
+      ansible.playbook = './ansible/main.yml'  # A relative path on the /vagrant guest directory.
       ansible.sudo = true
       # ansible.verbose = 'vv'
     end

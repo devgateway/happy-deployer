@@ -2,20 +2,24 @@
 
 # TODO: Improve!
 
+# - name: Create temproary directory.
+#   command: "mktemp --directory --suffix='--solr'"
+#   register: solr_temp_dir
+
 - name: Download Solr
-  get_url: url={{ solr__solr_download_url }} dest=/opt sha256sum={{ solr__solr_download_checksum }}
+  get_url: url={{ _solr__download_url }} dest=/tmp checksum={{ solr__download_checksum }}
   register: solr_archive
 
-- name: Extract archive
+- name: Extract Solr package archive
   unarchive: src={{ solr_archive.dest }} dest=/opt copy=no
 
-- name: Run the install script
-  command: "/opt/solr-5.5.2/bin/install_solr_service.sh /opt/solr-5.5.2.tgz -p {{ solr__port }} -f"
+- name: Run the Solr install script
+  command: "/opt/{{ _solr__package }}/bin/install_solr_service.sh {{ solr_archive.dest }} -p {{ solr__port }} -f"
   args:
     creates: /etc/init.d/solr
 
-- name: Solr was started using init script, stopping it.
+- name: Stopping Solr in order to start it using systemd.
   command: service solr stop
 
-- name: Start solr using systemd
+- name: Start and Enable Solr using systemd
   service: name=solr state=started enabled=yes

@@ -11,7 +11,7 @@
   yum: name=java-1.8.0-openjdk-headless state=installed
 
 - name: Check solr presence
-  stat: path=/opt/solr-5.5.2/bin/solr
+  stat: path=/opt/{{ _solr__package }}/bin/solr
   register: solr_executable
 
 - name: Download and install Solr

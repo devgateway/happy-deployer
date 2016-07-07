@@ -1,8 +1,11 @@
 ---
 - name: Configure LAMP
-  hosts: all
+  hosts: "{{ hosts|default('localhost') }}"
   become: true
   become_user: root
+
+  vars_files:
+    - ["vars.{{ project_environment|default('local') }}.yml", "vars.default.yml"]
 
   tasks:
     - hostname: name={{ hostname }}

@@ -4,87 +4,14 @@
 # You can copy this file to "Vagrantsettings.local.yml" and configure it.
 #
 
-########################################
-# Project specific settings.
-
+# Used to name the VM and set hostname for the GUEST (only if vagrant.hosts_entry is 1).
+# TODO: Use `project_environment` to botstrap instances?!?
 project_shortname: the-project
 project_environment: local
 
-# Vhosts and shared folders:
-#  - domain: the vhost domain.
-#  - aliases: an array of URL aliases for the vhost.
-#  - template: name of the template used to create the vhost.
-#  - noindex: ads a /robots.txt instructing robots to not index the vhost.
-#  - php_devel: ad some PHP devel specific settings to the vhost.
-#  - php_xdebug: load the PHP xdebug extension.
-#  - docroot: directory in the guest OS for the vhost docroot.
-#  - weight: the priority of the vhost.
-vhosts:
-  - domain: the-project.dev
-    aliases:
-      - www.the-project.dev
-    template: default
-    noindex: true
-    php_devel: true
-    php_xdebug: true
-    docroot: /var/www/the-project/web
-    weight: 10
-  - domain: another-project.dev
-    aliases:
-      - www.another-project.dev
-    template: default
-    docroot: /var/wwwanother-project/web
-    weight: 20
-
-solr__cores:
-  - name: project_local
-
-# Extra open TCP ports.
-common__extra_open_tcp_ports:
-  - 22
-  - 3306
-
-# Ansible variables to override.
-#httpd_php56__memory_limit: 512M
-#httpd_php56__date_timezone: 'Europe/Bucharest'
-#httpd_php56__error_reporting: E_ALL
-#httpd_php56__display_errors: On
-#httpd_php56__display_startup_errors: On
-#httpd_php56__opcache_revalidate_freq: 1
-#solr__solr_download_url: file:///vagrant/solr-5.5.2.tgz
-
-####################
-# Database specific settings.
-
-mariadb__root_password: 'this_is_a_random_password'
-mariadb__databases:
-  - name: main_database
-    user: main_user
-    pass: 'this_is_a_random_generated_password!'
-
-# pgsql__allow_remote_access: false
-# pgsql__root_password: 'this_is_a_random_password'
-# pgsql__databases:
-#   - name: main_database
-#     user: main_user
-#     pass: 'this_is_a_random_generated_password!'
-#   - name: seccond_database
-#     user: seccond_user
-#     pass: 'this_is_another_random_generated_password!'
-
-# mongodb__databases:
-#   - name: main_database
-#     user: main_user
-#     pass: 'this_is_a_random_generated_password!'
-
-
-########################################
-# Vagrant settings.
-# NOTE: Delete section when provisioning outside Vagrant!
-
 # Vagrant VM only settings.
-#  - vm.hostonlyip should be unique among your virtual machines.
-#  - the VM hostname is created using vm.shortname and vm.environment.
+#  - hostonlyip: should be unique IP among your virtual machines.
+#  - hosts_entry: determines if the GUEST hostname is add added to the HOST /etc/hosts file.
 vagrant:
   hostonlyip: 10.10.10.10
   hosts_entry: 0

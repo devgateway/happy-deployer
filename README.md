@@ -4,7 +4,7 @@
 ## Requirements
 
 * [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-* [Vagrant](http://www.vagrantup.com/downloads.html)
+* [Vagrant](http://www.vagrantup.com/downloads.html) version 1.8.4 or newer
 * [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest)
 * [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater) (tested on linux and Mac OS)
 * (optional) [vagrant-bash-completion](https://github.com/kura/vagrant-bash-completion)

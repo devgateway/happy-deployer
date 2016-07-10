@@ -1,0 +1,33 @@
+---
+# Fallback environment settings file.
+# You can copy this file to "vars.{$project_environment}.yml" and configure it.
+#
+# NOTE: The project Vagrantfile first tries to load "vars.local.yml".
+# TODO: Improve!!!
+#
+
+# Web server vhosts information:
+#  - template: name of the template used to create the vhost.
+#  - noindex: ad a /robots.txt instructing robots to not index the vhost.
+#  - php_devel: ad some PHP devel specific settings to the vhost.
+#  - php_xdebug: load the PHP xdebug extension.
+#  - docroot: directory in the guest OS for the vhost docroot.
+vhosts:
+  - domain: the-project.local
+    template: default
+    noindex: true
+    php_devel: true
+    php_xdebug: true
+    docroot: /var/www/the-project-local/web
+    weight: 10
+
+# Apache Solr cores for Drupal.
+solr__cores:
+  - name: project_local
+
+# Database credentials.
+mariadb__root_password: 'this_is_a_random_password!!!'
+mariadb__databases:
+  - name: main_database
+    user: main_user
+    pass: 'this_is_another_random_password!'

@@ -1,6 +1,10 @@
 happy-deployer CHANGELOG
 ========================
 
+0.3.x
+-----
+* Add basic PostgreSQL Ansible role.
+
 0.3.0
 -----
 * Updated to Scientific Linux 7
@@ -12,9 +16,9 @@ happy-deployer CHANGELOG
 * Updated Drush to v8.
 * Updated PHP to v5.6.
 * Installed Composer PHP package manager.
-* Added Solr and Memcached playbooks. 
+* Added Solr and Memcached playbooks.
 * Controlling firewall and listening ports for Apache HTTPD, MariaDB (MySQL), Memcached and Solr.
-* Added the possibility to create users. 
+* Added the possibility to create users.
 * Installed yum-cron in order to automatically install updates.
 * And more...
 

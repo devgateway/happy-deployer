@@ -12,12 +12,14 @@ common__ius_repo_gpg_key_url: /etc/pki/rpm-gpg/IUS-COMMUNITY-GPG-KEY
 common__extra_open_tcp_ports:
   - 22
 
+# @see: http://docs.ansible.com/ansible/faq.html#how-do-i-generate-crypted-passwords-for-the-user-module
 # common__developers:
 #   - name: example
 #     comment: Example User
 #     key: https://example.org/~example/authorized_keys.txt
 #     group: developers
 #     groups: wheel
+#     password: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 
 # Set the backups directory owner and group.
 common__backups_user: deployer

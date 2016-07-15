@@ -6,6 +6,7 @@ happy-deployer CHANGELOG
 * Add basic PostgreSQL Ansible role.
 * Ansible common: Install net-tools, vim, wget.
 * Veewee: Update VirtualBox Guest Additions install script. Install "Development Tools" group.
+* Veewee: Make as few changes as possible to the VM. Removed extra repositories, Ansible and simplified cleanup scripts.
 
 0.3.0
 -----

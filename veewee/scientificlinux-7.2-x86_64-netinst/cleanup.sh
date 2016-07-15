@@ -1,4 +1,3 @@
-yum -y erase gtk2 libX11 hicolor-icon-theme avahi freetype bitstream-vera-fonts
+yum -y erase avahi freetype
 yum -y erase iwl*-firmware
 yum -y clean all
-rm -rf VBoxGuestAdditions_*.iso

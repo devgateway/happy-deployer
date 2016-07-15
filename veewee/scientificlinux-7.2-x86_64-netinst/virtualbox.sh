@@ -1,7 +1,11 @@
-# Installing the virtualbox guest additions
+# Install VirtualBox guest additions requirements.
+# @see https://wiki.centos.org/HowTos/Virtualization/VirtualBox/CentOSguest
+yum -y install kernel-devel dkms
+yum groupinstall "Development Tools"
+
+# Install VirtualBox guest additions.
 VBOX_VERSION=$(cat /home/vagrant/.vbox_version)
-cd /tmp
-mount -o loop /home/vagrant/VBoxGuestAdditions_$VBOX_VERSION.iso /mnt
+mount -o loop,ro /home/vagrant/VBoxGuestAdditions_$VBOX_VERSION.iso /mnt
 sh /mnt/VBoxLinuxAdditions.run
 umount /mnt
-rm -rf /home/vagrant/VBoxGuestAdditions_*.iso
+rm -f /home/vagrant/VBoxGuestAdditions_*.iso

@@ -5,7 +5,7 @@ Veewee::Session.declare({
   :disk_format => 'VDI',
   :hostiocache => 'off',
   :os_type_id => 'RedHat_64',
-  :iso_file => "SL-7.1-x86_64-netinst.iso",
+  :iso_file => "SL-7.2-x86_64-netinst.iso",
   :iso_src => "http://ftp.heanet.ie/pub/rsync.scientificlinux.org/7.2/x86_64/iso/SL-7.2-x86_64-netinst.iso",
   :iso_shai => "7983b8dd597478cedf0a0f05294d35221bffddb7",
   :iso_download_timeout => 1200,
@@ -27,9 +27,6 @@ Veewee::Session.declare({
   :postinstall_files => [
     "base.sh",
     "vagrant.sh",
-    "repo-epel.sh",
-    "repo-ius.sh",
-    "ansible.sh",
     "virtualbox.sh",
     "cleanup.sh",
     "zerodisk.sh"

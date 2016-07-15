@@ -1,3 +1,3 @@
-yum -y erase avahi freetype
-yum -y erase iwl*-firmware
-yum -y clean all
+yum --assumeyes erase avahi freetype
+yum --assumeyes erase iwl*-firmware
+yum --assumeyes clean all

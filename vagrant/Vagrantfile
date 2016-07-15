@@ -1,6 +1,9 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+# For more information:
+# @see https://github.com/devgateway/happy-deployer
+
 # REQUIREMENTS:
 # @see https://github.com/cogitatio/vagrant-hostsupdater
 # @see https://github.com/dotless-de/vagrant-vbguest

@@ -3,6 +3,9 @@
 #
 # You can copy this file to "Vagrantsettings.local.yml" and configure it.
 #
+# For more information:
+# @see https://github.com/devgateway/happy-deployer
+#
 
 # Used to name the VM and set hostname for the GUEST (only if vagrant.hosts_entry is 1).
 # TODO: Use `project_environment` to botstrap instances?!?

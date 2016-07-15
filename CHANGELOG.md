@@ -4,6 +4,7 @@ happy-deployer CHANGELOG
 0.3.x
 -----
 * Add basic PostgreSQL Ansible role.
+* Ansible common: Install net-tools, vim, wget.
 
 0.3.0
 -----

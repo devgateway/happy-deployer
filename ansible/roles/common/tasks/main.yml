@@ -37,9 +37,12 @@
     - iftop
     - iotop
     - lsof
+    - net-tools
     - nmap-ncat
     - patch
     - screen
+    - vim
+    - wget
 
 - name: Install yum-cron.
   yum: name=yum-cron state=present

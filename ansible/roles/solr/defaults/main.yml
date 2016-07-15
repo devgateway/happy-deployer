@@ -11,9 +11,10 @@ solr__version: 5.5.2
 solr__download_checksum: "md5:ad798c4ddeccd740cf78c25c7962ba71"
 
 # Set the Download mirror, WITH a trailing slash.
+# NOTE: The Apache.org Archive is very slow.
 solr__download_mirror: https://archive.apache.org/dist/lucene/solr/
 
-# Mirros only offer the latest version.
+  # Official mirros only offer the latest version.
 # @see: http://www.apache.org/dyn/closer.lua/lucene/solr/
 # solr__download_mirror: https://www-eu.apache.org/dist/lucene/solr/
 # solr__download_mirror: https://www-us.apache.org/dist/lucene/solr/

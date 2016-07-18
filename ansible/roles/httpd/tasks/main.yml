@@ -19,6 +19,11 @@
 - name: Enable and start Apache HTTPD
   service: name=httpd state=started enabled=yes
 
+- name: Update logrotate configuration
+  template:
+    src: logrotate.j2
+    dest: /etc/logrotate.d/httpd
+
 - name: Create Directory for Virutal Hosts
   file: path=/etc/httpd/vhosts.d state=directory mode=0755
 
@@ -41,24 +46,5 @@
 - name: Copy noindex robots.txt
   copy: src=robots.noindex.txt dest=/var/www/html/robots.noindex.txt
 
-- name: Create document roots
-  file:
-    path: "{{ item.docroot }}"
-    state: directory
-    owner: "{{ httpd__User_vhosts }}"
-    group: "{{ httpd__Group_vhosts }}"
-    mode: "u=rwx,g=rwx,o=rx"
-  with_items: "{{ vhosts|default([]) }}"
-
-- name: Add apache vhosts configuration.
-  template:
-    src: "vhost_{{ item.template }}.conf.j2"
-    dest: "/etc/httpd/vhosts.d/{{ '%02d'|format(item.weight|int) }}--{{ item.domain }}.conf"
-  with_items: "{{ vhosts|default([]) }}"
-  notify:
-    - restart httpd
-
-- name: Update logrotate configuration
-  template:
-    src: logrotate.j2
-    dest: /etc/logrotate.d/httpd
+- name: Manage VirtualHosts
+  include: vhosts.yml

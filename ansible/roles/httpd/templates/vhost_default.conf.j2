@@ -1,6 +1,13 @@
 ## Virtual Host for {{ item.domain }}
 ## {{ ansible_managed }}
 
+# Template options:
+#  - domain: the vhost domain name
+#  - noindex: ad a /robots.txt instructing robots to not index the vhost.
+#  - docroot: directory in the guest OS for the vhost docroot.
+#  - php_devel: ad some PHP devel specific settings to the vhost.
+#  - php_xdebug: load the PHP xdebug extension.
+
 <VirtualHost *:80>
   ServerName {{ item.domain }}
 

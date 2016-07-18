@@ -4,7 +4,7 @@
 #   debug: var=hostvars[inventory_hostname] verbosity=4
 
 # - debug: var=postgresql__port
-# - debug: var=postgresql__client_authentication
+# - debug: var=postgresql__client_authentication_default
 
 - name: Ensure repository is installed
   include: repo.yml

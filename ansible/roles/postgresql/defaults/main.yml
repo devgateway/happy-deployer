@@ -25,7 +25,7 @@ postgresql__repo_gpg_key_url: /etc/pki/rpm-gpg/RPM-GPG-KEY-PGDG-95
 
 # PostgreSQL Client Authentication Configuration
 # @see: https://www.postgresql.org/docs/9.5/static/client-authentication.html
-postgresql__client_authentication:
+postgresql__client_authentication_default:
   - comment: 'postgres: peer auth on Unix-domain socket connections'
     type: local
     database: all

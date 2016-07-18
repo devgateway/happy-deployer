@@ -75,7 +75,13 @@
 
 
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
-{% for connection in postgresql__client_authentication %}
+{% for connection in postgresql__client_authentication_default|default([]) %}
+# {{ connection.comment }}
+{{ '%-6s'|format(connection.type) }}  {{ '%-14s'|format(connection.database) }}  {{ '%-14s'|format(connection.user) }}  {{ '%-22s'|format(connection.address) }}  {{ connection.method }}
+
+{% endfor %}
+
+{% for connection in postgresql__client_authentication_extras|default([]) %}
 # {{ connection.comment }}
 {{ '%-6s'|format(connection.type) }}  {{ '%-14s'|format(connection.database) }}  {{ '%-14s'|format(connection.user) }}  {{ '%-22s'|format(connection.address) }}  {{ connection.method }}
 
